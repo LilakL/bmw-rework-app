@@ -55,7 +55,15 @@ margin-bottom:20px;
 
 <label>Defect</label>
 <select id="defect">
-<option>Loading...</option>
+
+<option value="D001|Rysa">D001 - Rysa</option>
+<option value="D002|Funkcja">D002 - Funkcja</option>
+<option value="D003|Wysrebrzenie">D003 - Wysrebrzenie</option>
+<option value="D004|Ostre krawędzie">D004 - Ostre krawędzie</option>
+<option value="D005|Ciało obce">D005 - Ciało obce</option>
+<option value="D006|Wtrącenie">D006 - Wtrącenie</option>
+<option value="D999|Inne">D999 - Inne</option>
+
 </select>
 
 <label>Comment</label>
@@ -91,64 +99,6 @@ SAVE
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycby6V6Md2nCXcavnTMWOUILAPPWeQ_lE23NwQ1lnH6KIFmMhik8tSXHT2ihy-cgC9H27/exec";
-
-loadDefects();
-
-async function loadDefects(){
-
-try{
-
-const response =
-await fetch(
-API_URL + "?action=getDefects",
-{
-method:"GET"
-}
-);
-
-const text =
-await response.text();
-
-console.log("API RESPONSE:");
-console.log(text);
-
-const data =
-JSON.parse(text);
-
-let html = "";
-
-data.forEach(row=>{
-
-html += `
-<option value="${row[0]}|${row[1]}">
-${row[0]} - ${row[1]}
-</option>
-`;
-
-});
-
-document.getElementById(
-"defect"
-).innerHTML = html;
-
-}
-catch(err){
-
-console.error(err);
-
-document.getElementById(
-"defect"
-).innerHTML =
-"<option>ERROR</option>";
-
-alert(
-"Load defects error:\n\n" +
-err.message
-);
-
-}
-
-}
 
 function onScanSuccess(text){
 
@@ -212,8 +162,8 @@ reader.readAsDataURL(file);
 const payload = {
 
 serial:serial,
-defectCode:parts[0] || "",
-defectName:parts[1] || "",
+defectCode:parts[0],
+defectName:parts[1],
 comment:document.getElementById("comment").value,
 qty:document.getElementById("qty").value,
 shift:document.getElementById("shift").value,
@@ -221,6 +171,8 @@ user:document.getElementById("user").value,
 image:image
 
 };
+
+try{
 
 const response =
 await fetch(API_URL,{
@@ -242,11 +194,23 @@ result.id +
 
 document.getElementById(
 "comment"
-).value="";
+).value = "";
 
 document.getElementById(
 "photo"
-).value="";
+).value = "";
+
+}
+catch(error){
+
+alert(
+"Save error: " +
+error.message
+);
+
+console.error(error);
+
+}
 
 }
 
