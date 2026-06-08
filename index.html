@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -100,13 +101,55 @@ SAVE
 const API_URL =
 "https://script.google.com/macros/s/AKfycby6V6Md2nCXcavnTMWOUILAPPWeQ_lE23NwQ1lnH6KIFmMhik8tSXHT2ihy-cgC9H27/exec";
 
+let saveInProgress = false;
+let lastScan = "";
+let lastScanTime = 0;
+
+function beepSuccess(){
+
+const audioCtx =
+new (window.AudioContext ||
+window.webkitAudioContext)();
+
+const osc1 =
+audioCtx.createOscillator();
+
+osc1.frequency.value = 1500;
+osc1.connect(audioCtx.destination);
+osc1.start();
+osc1.stop(audioCtx.currentTime + 0.08);
+
+const osc2 =
+audioCtx.createOscillator();
+
+osc2.frequency.value = 2200;
+osc2.connect(audioCtx.destination);
+osc2.start(audioCtx.currentTime + 0.12);
+osc2.stop(audioCtx.currentTime + 0.20);
+
+}
+
 function onScanSuccess(text){
+
+const now = Date.now();
+
+if(
+text === lastScan &&
+(now - lastScanTime) < 10000
+){
+return;
+}
+
+lastScan = text;
+lastScanTime = now;
 
 document.getElementById(
 "serial"
 ).value = text;
 
-navigator.vibrate?.(150);
+navigator.vibrate?.([100,50,100]);
+
+beepSuccess();
 
 }
 
@@ -120,6 +163,10 @@ qrbox:250
 
 async function saveData(){
 
+if(saveInProgress){
+return;
+}
+
 const serial =
 document.getElementById("serial").value;
 
@@ -130,6 +177,8 @@ alert("Scan QR first");
 return;
 
 }
+
+saveInProgress = true;
 
 const defect =
 document.getElementById("defect").value;
@@ -185,12 +234,20 @@ body:JSON.stringify(payload)
 const result =
 await response.json();
 
+beepSuccess();
+
+navigator.vibrate?.([100,50,100]);
+
 document.getElementById(
 "status"
 ).innerHTML =
 '<p class="success">Saved: ' +
 result.id +
 '</p>';
+
+document.getElementById(
+"serial"
+).value = "";
 
 document.getElementById(
 "comment"
@@ -200,8 +257,21 @@ document.getElementById(
 "photo"
 ).value = "";
 
+document.getElementById(
+"qty"
+).value = "1";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+saveInProgress = false;
+
 }
 catch(error){
+
+saveInProgress = false;
 
 alert(
 "Save error: " +
@@ -219,3 +289,4 @@ console.error(error);
 </body>
 
 </html>
+```
