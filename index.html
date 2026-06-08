@@ -28,16 +28,16 @@ button{
 background:#0066cc;
 color:white;
 border:none;
-}
-
-#reader{
-margin-top:10px;
-margin-bottom:20px;
+cursor:pointer;
 }
 
 .success{
 color:green;
 font-weight:bold;
+}
+
+#reader{
+margin-bottom:20px;
 }
 
 </style>
@@ -87,44 +87,44 @@ SAVE
 
 <script>
 
+const API_URL =
+"https://script.google.com/macros/s/AKfycby6V6Md2nCXcavnTMWOUILAPPWeQ_lE23NwQ1lnH6KIFmMhik8tSXHT2ihy-cgC9H27/exec";
+
 loadDefects();
 
-function loadDefects(){
+async function loadDefects(){
 
-google.script.run
-.withSuccessHandler(function(data){
+const response =
+await fetch(
+API_URL + "?action=getDefects"
+);
+
+const data =
+await response.json();
 
 let html = "";
 
-data.forEach(function(row){
+data.forEach(row=>{
 
-html +=
-'<option value="' +
-row[0] +
-'|' +
-row[1] +
-'">' +
-row[0] +
-' - ' +
-row[1] +
-'</option>';
+html += `
+<option value="${row[0]}|${row[1]}">
+${row[0]} - ${row[1]}
+</option>
+`;
 
 });
 
-document
-.getElementById("defect")
-.innerHTML = html;
-
-})
-.getDefects();
+document.getElementById(
+"defect"
+).innerHTML = html;
 
 }
 
-function onScanSuccess(decodedText){
+function onScanSuccess(text){
 
-document
-.getElementById("serial")
-.value = decodedText;
+document.getElementById(
+"serial"
+).value = text;
 
 navigator.vibrate?.(150);
 
@@ -138,7 +138,7 @@ qrbox:250
 }
 ).render(onScanSuccess);
 
-function saveData(){
+async function saveData(){
 
 const serial =
 document.getElementById("serial").value;
@@ -154,100 +154,74 @@ return;
 const defect =
 document.getElementById("defect").value;
 
-const parts = defect.split("|");
-
-const defectCode = parts[0];
-const defectName = parts[1];
-
-const comment =
-document.getElementById("comment").value;
-
-const qty =
-document.getElementById("qty").value;
-
-const shift =
-document.getElementById("shift").value;
-
-const user =
-document.getElementById("user").value;
+const parts =
+defect.split("|");
 
 const file =
 document.getElementById("photo").files[0];
 
-const reader =
-new FileReader();
-
-reader.onload = function(e){
-
-google.script.run
-.withSuccessHandler(function(result){
-
-document
-.getElementById("status")
-.innerHTML =
-'<p class="success">Saved: '
-+ result.id +
-'</p>';
-
-document
-.getElementById("comment")
-.value = "";
-
-document
-.getElementById("photo")
-.value = "";
-
-})
-.saveRecord({
-
-serial:serial,
-defectCode:defectCode,
-defectName:defectName,
-comment:comment,
-qty:qty,
-shift:shift,
-user:user,
-image:e.target.result
-
-});
-
-};
+let image = "";
 
 if(file){
 
+image =
+await new Promise(resolve=>{
+
+const reader =
+new FileReader();
+
+reader.onload =
+e=>resolve(e.target.result);
+
 reader.readAsDataURL(file);
-
-}else{
-
-google.script.run
-.withSuccessHandler(function(result){
-
-document
-.getElementById("status")
-.innerHTML =
-'<p class="success">Saved: '
-+ result.id +
-'</p>';
-
-})
-.saveRecord({
-
-serial:serial,
-defectCode:defectCode,
-defectName:defectName,
-comment:comment,
-qty:qty,
-shift:shift,
-user:user,
-image:""
 
 });
 
 }
+
+const payload = {
+
+serial:serial,
+defectCode:parts[0],
+defectName:parts[1],
+comment:document.getElementById("comment").value,
+qty:document.getElementById("qty").value,
+shift:document.getElementById("shift").value,
+user:document.getElementById("user").value,
+image:image
+
+};
+
+const response =
+await fetch(API_URL,{
+
+method:"POST",
+body:JSON.stringify(payload)
+
+});
+
+const result =
+await response.json();
+
+document.getElementById(
+"status"
+).innerHTML =
+'<p class="success">Saved: ' +
+result.id +
+'</p>';
+
+document.getElementById(
+"comment"
+).value="";
+
+document.getElementById(
+"photo"
+).value="";
 
 }
 
 </script>
 
 </body>
+
 </html>
