@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+
+body{
+font-family:Arial;
+padding:15px;
+max-width:700px;
+margin:auto;
+}
+
+input,select,textarea,button{
+width:100%;
+padding:12px;
+margin-top:10px;
+font-size:16px;
+box-sizing:border-box;
+}
+
+button{
+background:#0066cc;
+color:white;
+border:none;
+}
+
+#reader{
+margin-top:10px;
+margin-bottom:20px;
+}
+
+.success{
+color:green;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>BMW Rework App V2</h2>
+
+<div id="reader"></div>
+
+<label>Serial Number</label>
+<input id="serial">
+
+<label>Defect</label>
+<select id="defect"></select>
+
+<label>Comment</label>
+<textarea id="comment"></textarea>
+
+<label>Quantity</label>
+<input id="qty" type="number" value="1">
+
+<label>Shift</label>
+<select id="shift">
+<option>A</option>
+<option>B</option>
+<option>C</option>
+</select>
+
+<label>Photo</label>
+<input
+type="file"
+id="photo"
+accept="image/*"
+capture="environment">
+
+<label>User</label>
+<input id="user" value="Konrad">
+
+<button onclick="saveData()">
+SAVE
+</button>
+
+<div id="status"></div>
+
+<script>
+
+loadDefects();
+
+function loadDefects(){
+
+google.script.run
+.withSuccessHandler(function(data){
+
+let html = "";
+
+data.forEach(function(row){
+
+html +=
+'<option value="' +
+row[0] +
+'|' +
+row[1] +
+'">' +
+row[0] +
+' - ' +
+row[1] +
+'</option>';
+
+});
+
+document
+.getElementById("defect")
+.innerHTML = html;
+
+})
+.getDefects();
+
+}
+
+function onScanSuccess(decodedText){
+
+document
+.getElementById("serial")
+.value = decodedText;
+
+navigator.vibrate?.(150);
+
+}
+
+new Html5QrcodeScanner(
+"reader",
+{
+fps:10,
+qrbox:250
+}
+).render(onScanSuccess);
+
+function saveData(){
+
+const serial =
+document.getElementById("serial").value;
+
+if(!serial){
+
+alert("Scan QR first");
+
+return;
+
+}
+
+const defect =
+document.getElementById("defect").value;
+
+const parts = defect.split("|");
+
+const defectCode = parts[0];
+const defectName = parts[1];
+
+const comment =
+document.getElementById("comment").value;
+
+const qty =
+document.getElementById("qty").value;
+
+const shift =
+document.getElementById("shift").value;
+
+const user =
+document.getElementById("user").value;
+
+const file =
+document.getElementById("photo").files[0];
+
+const reader =
+new FileReader();
+
+reader.onload = function(e){
+
+google.script.run
+.withSuccessHandler(function(result){
+
+document
+.getElementById("status")
+.innerHTML =
+'<p class="success">Saved: '
++ result.id +
+'</p>';
+
+document
+.getElementById("comment")
+.value = "";
+
+document
+.getElementById("photo")
+.value = "";
+
+})
+.saveRecord({
+
+serial:serial,
+defectCode:defectCode,
+defectName:defectName,
+comment:comment,
+qty:qty,
+shift:shift,
+user:user,
+image:e.target.result
+
+});
+
+};
+
+if(file){
+
+reader.readAsDataURL(file);
+
+}else{
+
+google.script.run
+.withSuccessHandler(function(result){
+
+document
+.getElementById("status")
+.innerHTML =
+'<p class="success">Saved: '
++ result.id +
+'</p>';
+
+})
+.saveRecord({
+
+serial:serial,
+defectCode:defectCode,
+defectName:defectName,
+comment:comment,
+qty:qty,
+shift:shift,
+user:user,
+image:""
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
