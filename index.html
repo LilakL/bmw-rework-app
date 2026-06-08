@@ -54,7 +54,9 @@ margin-bottom:20px;
 <input id="serial">
 
 <label>Defect</label>
-<select id="defect"></select>
+<select id="defect">
+<option>Loading...</option>
+</select>
 
 <label>Comment</label>
 <textarea id="comment"></textarea>
@@ -94,13 +96,24 @@ loadDefects();
 
 async function loadDefects(){
 
+try{
+
 const response =
 await fetch(
-API_URL + "?action=getDefects"
+API_URL + "?action=getDefects",
+{
+method:"GET"
+}
 );
 
+const text =
+await response.text();
+
+console.log("API RESPONSE:");
+console.log(text);
+
 const data =
-await response.json();
+JSON.parse(text);
 
 let html = "";
 
@@ -117,6 +130,23 @@ ${row[0]} - ${row[1]}
 document.getElementById(
 "defect"
 ).innerHTML = html;
+
+}
+catch(err){
+
+console.error(err);
+
+document.getElementById(
+"defect"
+).innerHTML =
+"<option>ERROR</option>";
+
+alert(
+"Load defects error:\n\n" +
+err.message
+);
+
+}
 
 }
 
@@ -182,8 +212,8 @@ reader.readAsDataURL(file);
 const payload = {
 
 serial:serial,
-defectCode:parts[0],
-defectName:parts[1],
+defectCode:parts[0] || "",
+defectName:parts[1] || "",
 comment:document.getElementById("comment").value,
 qty:document.getElementById("qty").value,
 shift:document.getElementById("shift").value,
