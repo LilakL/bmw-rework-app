@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -72,14 +73,23 @@ margin-bottom:20px;
 <label>Quantity</label>
 <input id="qty" type="number" value="1">
 
-<label>Shift</label>
-<select id="shift">
-<option>A</option>
-<option>B</option>
-<option>C</option>
+<label>OEM</label>
+<select id="oem">
+<option value="BMW">BMW</option>
+<option value="VW">VW</option>
+<option value="SEAT">SEAT</option>
+<option value="AUDI">AUDI</option>
+<option value="STELLANTIS">STELLANTIS</option>
 </select>
 
-<label>Photo</label>
+<label>Customer Label</label>
+<input
+type="file"
+id="labelPhoto"
+accept="image/*"
+capture="environment">
+
+<label>Failure Photo</label>
 <input
 type="file"
 id="photo"
@@ -185,10 +195,14 @@ document.getElementById("defect").value;
 const parts =
 defect.split("|");
 
+const labelFile =
+document.getElementById("labelPhoto").files[0];
+
 const file =
 document.getElementById("photo").files[0];
 
 let image = "";
+let labelImage = "";
 
 if(file){
 
@@ -207,6 +221,23 @@ reader.readAsDataURL(file);
 
 }
 
+if(labelFile){
+
+labelImage =
+await new Promise(resolve=>{
+
+const reader =
+new FileReader();
+
+reader.onload =
+e=>resolve(e.target.result);
+
+reader.readAsDataURL(labelFile);
+
+});
+
+}
+
 const payload = {
 
 serial:serial,
@@ -214,8 +245,9 @@ defectCode:parts[0],
 defectName:parts[1],
 comment:document.getElementById("comment").value,
 qty:document.getElementById("qty").value,
-shift:document.getElementById("shift").value,
+oem:document.getElementById("oem").value,
 user:document.getElementById("user").value,
+labelImage:labelImage,
 image:image
 
 };
@@ -254,6 +286,10 @@ document.getElementById(
 
 document.getElementById(
 "photo"
+).value = "";
+
+document.getElementById(
+"labelPhoto"
 ).value = "";
 
 document.getElementById(
