@@ -69,6 +69,8 @@ function saveRecord(data) {
         SHEET_NAME
       );
 
+  // DUPLICATE CHECK BY SERIAL NUMBER ONLY
+
   const rows =
     sheet.getDataRange()
       .getValues();
@@ -76,14 +78,13 @@ function saveRecord(data) {
   for(let i=1;i<rows.length;i++){
 
     if(
-      rows[i][2] == data.serial &&
-      rows[i][3] == data.defectCode &&
-      rows[i][7] == data.oem
+      String(rows[i][2]).trim() ===
+      String(data.serial).trim()
     ){
 
       return {
         status:"DUPLICATE",
-        id:"DUPLICATE"
+        id:"SERIAL_EXISTS"
       };
 
     }
@@ -92,6 +93,8 @@ function saveRecord(data) {
 
   let labelPhotoUrl = "";
   let photoUrl = "";
+
+  // CUSTOMER LABEL PHOTO
 
   if(
     data.labelImage &&
@@ -140,6 +143,8 @@ function saveRecord(data) {
     labelPhotoUrl =
       file.getUrl();
   }
+
+  // FAILURE PHOTO
 
   if(
     data.image &&
