@@ -1,3 +1,4 @@
+```javascript
 const SPREADSHEET_ID = "17GQW-mUQPpk5Y0hrUTJE3yQTx9UJA8ditdOOd8lqrnU";
 const SHEET_NAME = "REWORK_DATABASE";
 const DEFECT_SHEET = "DEFECT_CODES";
@@ -17,8 +18,7 @@ function doGet(e) {
   }
 
   return HtmlService
-    .createHtmlOutputFromFile("index")
-    .setTitle("BMW Rework App V2");
+    .createHtmlOutput("BMW API OK");
 }
 
 function doPost(e) {
@@ -27,7 +27,8 @@ function doPost(e) {
     e.postData.contents
   );
 
-  const result = saveRecord(data);
+  const result =
+    saveRecord(data);
 
   return ContentService
     .createTextOutput(
@@ -40,9 +41,14 @@ function doPost(e) {
 
 function getDefects() {
 
-  const sheet = SpreadsheetApp
-    .openById(SPREADSHEET_ID)
-    .getSheetByName(DEFECT_SHEET);
+  const sheet =
+    SpreadsheetApp
+      .openById(
+        SPREADSHEET_ID
+      )
+      .getSheetByName(
+        DEFECT_SHEET
+      );
 
   return sheet.getRange(
     2,
@@ -54,21 +60,54 @@ function getDefects() {
 
 function saveRecord(data) {
 
-  const sheet = SpreadsheetApp
-    .openById(SPREADSHEET_ID)
-    .getSheetByName(SHEET_NAME);
+  const sheet =
+    SpreadsheetApp
+      .openById(
+        SPREADSHEET_ID
+      )
+      .getSheetByName(
+        SHEET_NAME
+      );
 
+  const rows =
+    sheet.getDataRange()
+      .getValues();
+
+  for(let i=1;i<rows.length;i++){
+
+    if(
+      rows[i][2] == data.serial &&
+      rows[i][3] == data.defectCode &&
+      rows[i][7] == data.oem
+    ){
+
+      return {
+        status:"DUPLICATE",
+        id:"DUPLICATE"
+      };
+
+    }
+
+  }
+
+  let labelPhotoUrl = "";
   let photoUrl = "";
 
-  if (data.image && data.image !== "") {
+  if(
+    data.labelImage &&
+    data.labelImage !== ""
+  ){
 
     const base64Data =
-      data.image.split(",")[1];
+      data.labelImage.split(",")[1];
 
     const bytes =
-      Utilities.base64Decode(base64Data);
+      Utilities.base64Decode(
+        base64Data
+      );
 
     const fileName =
+      "LABEL_" +
       data.serial +
       "_" +
       Utilities.formatDate(
@@ -98,17 +137,70 @@ function saveRecord(data) {
       DriveApp.Permission.VIEW
     );
 
-    photoUrl = file.getUrl();
+    labelPhotoUrl =
+      file.getUrl();
+  }
+
+  if(
+    data.image &&
+    data.image !== ""
+  ){
+
+    const base64Data =
+      data.image.split(",")[1];
+
+    const bytes =
+      Utilities.base64Decode(
+        base64Data
+      );
+
+    const fileName =
+      "FAILURE_" +
+      data.serial +
+      "_" +
+      Utilities.formatDate(
+        new Date(),
+        Session.getScriptTimeZone(),
+        "yyyyMMdd_HHmmss"
+      ) +
+      ".jpg";
+
+    const blob =
+      Utilities.newBlob(
+        bytes,
+        "image/jpeg",
+        fileName
+      );
+
+    const folder =
+      DriveApp.getFolderById(
+        PHOTO_FOLDER_ID
+      );
+
+    const file =
+      folder.createFile(blob);
+
+    file.setSharing(
+      DriveApp.Access.ANYONE_WITH_LINK,
+      DriveApp.Permission.VIEW
+    );
+
+    photoUrl =
+      file.getUrl();
   }
 
   const id =
     "RW-" +
     Utilities.formatString(
       "%06d",
-      Math.max(sheet.getLastRow(), 1)
+      Math.max(
+        sheet.getLastRow(),
+        1
+      )
     );
 
   sheet.appendRow([
+
     id,
     new Date(),
     data.serial,
@@ -116,14 +208,20 @@ function saveRecord(data) {
     data.defectName,
     data.comment,
     data.qty,
-    data.shift,
+    data.oem,
+    labelPhotoUrl,
     photoUrl,
     data.user,
     "OPEN"
+
   ]);
 
   return {
-    status: "OK",
-    id: id
+
+    status:"OK",
+    id:id
+
   };
+
 }
+```
