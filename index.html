@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -55,7 +56,6 @@ margin-bottom:20px;
 
 <label>Defect</label>
 <select id="defect">
-
 <option value="D001|Rysa">D001 - Rysa</option>
 <option value="D002|Funkcja">D002 - Funkcja</option>
 <option value="D003|Wysrebrzenie">D003 - Wysrebrzenie</option>
@@ -63,7 +63,6 @@ margin-bottom:20px;
 <option value="D005|Ciało obce">D005 - Ciało obce</option>
 <option value="D006|Wtrącenie">D006 - Wtrącenie</option>
 <option value="D999|Inne">D999 - Inne</option>
-
 </select>
 
 <label>Comment</label>
@@ -125,24 +124,15 @@ audioCtx.createOscillator();
 osc1.frequency.value = 1500;
 osc1.connect(audioCtx.destination);
 osc1.start();
-
-osc1.stop(
-audioCtx.currentTime + 0.08
-);
+osc1.stop(audioCtx.currentTime + 0.08);
 
 const osc2 =
 audioCtx.createOscillator();
 
 osc2.frequency.value = 2200;
 osc2.connect(audioCtx.destination);
-
-osc2.start(
-audioCtx.currentTime + 0.12
-);
-
-osc2.stop(
-audioCtx.currentTime + 0.20
-);
+osc2.start(audioCtx.currentTime + 0.12);
+osc2.stop(audioCtx.currentTime + 0.20);
 
 }
 
@@ -160,9 +150,7 @@ return;
 lastScan = text;
 lastScanTime = now;
 
-document.getElementById(
-"serial"
-).value = text;
+document.getElementById("serial").value = text;
 
 navigator.vibrate?.([100,50,100]);
 
@@ -185,16 +173,12 @@ return;
 }
 
 const serial =
-document.getElementById(
-"serial"
-).value.trim();
+document.getElementById("serial")
+.value.trim();
 
 if(!serial){
 
-alert(
-"Scan QR first"
-);
-
+alert("Scan QR first");
 return;
 
 }
@@ -202,22 +186,19 @@ return;
 saveInProgress = true;
 
 const defect =
-document.getElementById(
-"defect"
-).value;
+document.getElementById("defect")
+.value;
 
 const parts =
 defect.split("|");
 
 const labelFile =
-document.getElementById(
-"labelPhoto"
-).files[0];
+document.getElementById("labelPhoto")
+.files[0];
 
 const file =
-document.getElementById(
-"photo"
-).files[0];
+document.getElementById("photo")
+.files[0];
 
 let image = "";
 let labelImage = "";
@@ -231,13 +212,9 @@ const reader =
 new FileReader();
 
 reader.onload =
-e=>resolve(
-e.target.result
-);
+e=>resolve(e.target.result);
 
-reader.readAsDataURL(
-labelFile
-);
+reader.readAsDataURL(labelFile);
 
 });
 
@@ -252,13 +229,9 @@ const reader =
 new FileReader();
 
 reader.onload =
-e=>resolve(
-e.target.result
-);
+e=>resolve(e.target.result);
 
-reader.readAsDataURL(
-file
-);
+reader.readAsDataURL(file);
 
 });
 
@@ -269,18 +242,10 @@ const payload = {
 serial:serial,
 defectCode:parts[0],
 defectName:parts[1],
-comment:document.getElementById(
-"comment"
-).value,
-qty:document.getElementById(
-"qty"
-).value,
-oem:document.getElementById(
-"oem"
-).value,
-user:document.getElementById(
-"user"
-).value,
+comment:document.getElementById("comment").value,
+qty:document.getElementById("qty").value,
+oem:document.getElementById("oem").value,
+user:document.getElementById("user").value,
 labelImage:labelImage,
 image:image
 
@@ -290,22 +255,19 @@ try{
 
 const response =
 await fetch(API_URL,{
-
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
 body:JSON.stringify(payload)
-
 });
 
-const result =
-await response.json();
+const text =
+await response.text();
 
-if(
-result.status ===
-"DUPLICATE"
-){
+console.log(text);
+
+const result =
+JSON.parse(text);
+
+if(result.status === "DUPLICATE"){
 
 alert(
 "Serial Number already exists:\n\n" +
@@ -313,43 +275,25 @@ serial
 );
 
 saveInProgress = false;
-
 return;
 
 }
 
 beepSuccess();
 
-navigator.vibrate?.(
-[100,50,100]
-);
+navigator.vibrate?.([100,50,100]);
 
-document.getElementById(
-"status"
-).innerHTML =
+document.getElementById("status")
+.innerHTML =
 '<p class="success">Saved: '
 + result.id +
 '</p>';
 
-document.getElementById(
-"serial"
-).value = "";
-
-document.getElementById(
-"comment"
-).value = "";
-
-document.getElementById(
-"photo"
-).value = "";
-
-document.getElementById(
-"labelPhoto"
-).value = "";
-
-document.getElementById(
-"qty"
-).value = "1";
+document.getElementById("serial").value = "";
+document.getElementById("comment").value = "";
+document.getElementById("photo").value = "";
+document.getElementById("labelPhoto").value = "";
+document.getElementById("qty").value = "1";
 
 window.scrollTo({
 top:0,
@@ -363,12 +307,12 @@ catch(error){
 
 saveInProgress = false;
 
+console.error(error);
+
 alert(
-"Save error: " +
+"Save error:\n\n" +
 error.message
 );
-
-console.error(error);
 
 }
 
@@ -379,3 +323,4 @@ console.error(error);
 </body>
 
 </html>
+```
