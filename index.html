@@ -74,11 +74,11 @@ margin-bottom:20px;
 
 <label>OEM</label>
 <select id="oem">
-<option value="BMW">BMW</option>
-<option value="VW">VW</option>
-<option value="SEAT">SEAT</option>
-<option value="AUDI">AUDI</option>
-<option value="STELLANTIS">STELLANTIS</option>
+<option>BMW</option>
+<option>VW</option>
+<option>SEAT</option>
+<option>AUDI</option>
+<option>STELLANTIS</option>
 </select>
 
 <label>Customer Label</label>
@@ -98,7 +98,7 @@ capture="environment">
 <label>User</label>
 <input id="user" value="Konrad">
 
-<button onclick="saveData()">
+<button type="button" onclick="saveData()">
 SAVE
 </button>
 
@@ -125,15 +125,24 @@ audioCtx.createOscillator();
 osc1.frequency.value = 1500;
 osc1.connect(audioCtx.destination);
 osc1.start();
-osc1.stop(audioCtx.currentTime + 0.08);
+
+osc1.stop(
+audioCtx.currentTime + 0.08
+);
 
 const osc2 =
 audioCtx.createOscillator();
 
 osc2.frequency.value = 2200;
 osc2.connect(audioCtx.destination);
-osc2.start(audioCtx.currentTime + 0.12);
-osc2.stop(audioCtx.currentTime + 0.20);
+
+osc2.start(
+audioCtx.currentTime + 0.12
+);
+
+osc2.stop(
+audioCtx.currentTime + 0.20
+);
 
 }
 
@@ -176,11 +185,15 @@ return;
 }
 
 const serial =
-document.getElementById("serial").value;
+document.getElementById(
+"serial"
+).value.trim();
 
 if(!serial){
 
-alert("Scan QR first");
+alert(
+"Scan QR first"
+);
 
 return;
 
@@ -189,36 +202,25 @@ return;
 saveInProgress = true;
 
 const defect =
-document.getElementById("defect").value;
+document.getElementById(
+"defect"
+).value;
 
 const parts =
 defect.split("|");
 
 const labelFile =
-document.getElementById("labelPhoto").files[0];
+document.getElementById(
+"labelPhoto"
+).files[0];
 
 const file =
-document.getElementById("photo").files[0];
+document.getElementById(
+"photo"
+).files[0];
 
 let image = "";
 let labelImage = "";
-
-if(file){
-
-image =
-await new Promise(resolve=>{
-
-const reader =
-new FileReader();
-
-reader.onload =
-e=>resolve(e.target.result);
-
-reader.readAsDataURL(file);
-
-});
-
-}
 
 if(labelFile){
 
@@ -229,9 +231,34 @@ const reader =
 new FileReader();
 
 reader.onload =
-e=>resolve(e.target.result);
+e=>resolve(
+e.target.result
+);
 
-reader.readAsDataURL(labelFile);
+reader.readAsDataURL(
+labelFile
+);
+
+});
+
+}
+
+if(file){
+
+image =
+await new Promise(resolve=>{
+
+const reader =
+new FileReader();
+
+reader.onload =
+e=>resolve(
+e.target.result
+);
+
+reader.readAsDataURL(
+file
+);
 
 });
 
@@ -242,10 +269,18 @@ const payload = {
 serial:serial,
 defectCode:parts[0],
 defectName:parts[1],
-comment:document.getElementById("comment").value,
-qty:document.getElementById("qty").value,
-oem:document.getElementById("oem").value,
-user:document.getElementById("user").value,
+comment:document.getElementById(
+"comment"
+).value,
+qty:document.getElementById(
+"qty"
+).value,
+oem:document.getElementById(
+"oem"
+).value,
+user:document.getElementById(
+"user"
+).value,
 labelImage:labelImage,
 image:image
 
@@ -257,6 +292,9 @@ const response =
 await fetch(API_URL,{
 
 method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify(payload)
 
 });
@@ -264,7 +302,10 @@ body:JSON.stringify(payload)
 const result =
 await response.json();
 
-if(result.status === "DUPLICATE"){
+if(
+result.status ===
+"DUPLICATE"
+){
 
 alert(
 "Serial Number already exists:\n\n" +
@@ -279,13 +320,15 @@ return;
 
 beepSuccess();
 
-navigator.vibrate?.([100,50,100]);
+navigator.vibrate?.(
+[100,50,100]
+);
 
 document.getElementById(
 "status"
 ).innerHTML =
-'<p class="success">Saved: ' +
-result.id +
+'<p class="success">Saved: '
++ result.id +
 '</p>';
 
 document.getElementById(
