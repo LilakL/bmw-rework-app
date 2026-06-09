@@ -1,4 +1,3 @@
-```javascript
 const SPREADSHEET_ID = "17GQW-mUQPpk5Y0hrUTJE3yQTx9UJA8ditdOOd8lqrnU";
 const SHEET_NAME = "REWORK_DATABASE";
 const DEFECT_SHEET = "DEFECT_CODES";
@@ -27,8 +26,7 @@ function doPost(e) {
     e.postData.contents
   );
 
-  const result =
-    saveRecord(data);
+  const result = saveRecord(data);
 
   return ContentService
     .createTextOutput(
@@ -75,16 +73,16 @@ function saveRecord(data) {
     sheet.getDataRange()
       .getValues();
 
-  for(let i=1;i<rows.length;i++){
+  for (let i = 1; i < rows.length; i++) {
 
-    if(
+    if (
       String(rows[i][2]).trim() ===
       String(data.serial).trim()
-    ){
+    ) {
 
       return {
-        status:"DUPLICATE",
-        id:"SERIAL_EXISTS"
+        status: "DUPLICATE",
+        id: "SERIAL_EXISTS"
       };
 
     }
@@ -96,10 +94,10 @@ function saveRecord(data) {
 
   // CUSTOMER LABEL PHOTO
 
-  if(
+  if (
     data.labelImage &&
     data.labelImage !== ""
-  ){
+  ) {
 
     const base64Data =
       data.labelImage.split(",")[1];
@@ -146,10 +144,10 @@ function saveRecord(data) {
 
   // FAILURE PHOTO
 
-  if(
+  if (
     data.image &&
     data.image !== ""
-  ){
+  ) {
 
     const base64Data =
       data.image.split(",")[1];
@@ -206,27 +204,26 @@ function saveRecord(data) {
 
   sheet.appendRow([
 
-    id,
-    new Date(),
-    data.serial,
-    data.defectCode,
-    data.defectName,
-    data.comment,
-    data.qty,
-    data.oem,
-    labelPhotoUrl,
-    photoUrl,
-    data.user,
-    "OPEN"
+    id,                 // A ID
+    new Date(),         // B Date
+    data.serial,        // C Serial Number
+    data.defectCode,    // D Defect Code
+    data.defectName,    // E Defect Description
+    data.comment,       // F Comment
+    data.qty,           // G Qty
+    data.oem,           // H OEM
+    labelPhotoUrl,      // I Customer Label
+    photoUrl,           // J Failure Photo
+    data.user,          // K User
+    "OPEN"              // L Status
 
   ]);
 
   return {
 
-    status:"OK",
-    id:id
+    status: "OK",
+    id: id
 
   };
 
 }
-```
