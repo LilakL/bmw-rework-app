@@ -265,6 +265,19 @@ body:JSON.stringify(payload)
 const result =
 await response.json();
 
+if(result.status === "DUPLICATE"){
+
+alert(
+"Serial Number already exists:\n\n" +
+serial
+);
+
+saveInProgress = false;
+
+return;
+
+}
+
 beepSuccess();
 
 navigator.vibrate?.([100,50,100]);
