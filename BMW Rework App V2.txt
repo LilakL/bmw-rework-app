@@ -91,6 +91,7 @@ function saveRecord(data) {
 
   let labelPhotoUrl = "";
   let photoUrl = "";
+  let fullLabelText = "";
 
   // CUSTOMER LABEL PHOTO
 
@@ -140,6 +141,12 @@ function saveRecord(data) {
 
     labelPhotoUrl =
       file.getUrl();
+
+    fullLabelText =
+      extractLabelText(
+        file.getId()
+      );
+
   }
 
   // FAILURE PHOTO
@@ -215,7 +222,8 @@ function saveRecord(data) {
     labelPhotoUrl,      // I Customer Label
     photoUrl,           // J Failure Photo
     data.user,          // K User
-    "OPEN"              // L Status
+    "OPEN",             // L Status
+    fullLabelText       // M Full Label Text
 
   ]);
 
@@ -225,5 +233,69 @@ function saveRecord(data) {
     id: id
 
   };
+
+}
+
+function extractLabelText(fileId) {
+
+  try {
+
+    const resource = {
+
+      title:
+        "OCR_" +
+        new Date().getTime(),
+
+      mimeType:
+        MimeType.GOOGLE_DOCS
+
+    };
+
+    const ocrFile =
+      Drive.Files.copy(
+        resource,
+        fileId,
+        {
+          ocr: true,
+          ocrLanguage: "en"
+        }
+      );
+
+    const text =
+      DocumentApp
+        .openById(
+          ocrFile.id
+        )
+        .getBody()
+        .getText();
+
+    DriveApp
+      .getFileById(
+        ocrFile.id
+      )
+      .setTrashed(true);
+
+    return text
+      .replace(/\n/g, " | ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+  }
+  catch(err){
+
+    Logger.log(err);
+
+    return "";
+
+  }
+
+}
+
+function testDriveApi() {
+
+  const files =
+    Drive.Files.list();
+
+  Logger.log(files);
 
 }
