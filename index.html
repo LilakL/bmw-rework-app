@@ -20,33 +20,31 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,Helvetica,sans-serif;
+font-family:Arial,sans-serif;
 padding:15px;
 max-width:700px;
 margin:auto;
 background:#f4f6f8;
-color:#222;
 }
 
-.app-container{
-background:white;
+.app{
+background:#ffffff;
 padding:20px;
 border-radius:12px;
-box-shadow:0 2px 12px rgba(0,0,0,0.10);
+box-shadow:0 2px 12px rgba(0,0,0,0.12);
 }
 
 h1{
-font-size:25px;
 text-align:center;
+font-size:25px;
 margin-top:0;
-margin-bottom:8px;
+margin-bottom:5px;
 }
 
 .subtitle{
 text-align:center;
 color:#666;
-margin-top:0;
-margin-bottom:22px;
+margin-bottom:25px;
 }
 
 .form-group{
@@ -65,8 +63,9 @@ select,
 textarea,
 button{
 width:100%;
-font-family:Arial,Helvetica,sans-serif;
 font-size:16px;
+font-family:Arial,sans-serif;
+box-sizing:border-box;
 border-radius:7px;
 }
 
@@ -74,8 +73,13 @@ input,
 select,
 textarea{
 padding:12px;
-border:1px solid #b8bec5;
+border:1px solid #aaa;
 background:white;
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
 }
 
 input:focus,
@@ -83,11 +87,6 @@ select:focus,
 textarea:focus{
 outline:none;
 border:2px solid #0066cc;
-}
-
-textarea{
-min-height:95px;
-resize:vertical;
 }
 
 button{
@@ -100,23 +99,19 @@ border:none;
 cursor:pointer;
 }
 
-button:hover{
-background:#004f9e;
-}
-
 button:disabled{
-background:#8d99a6;
+background:#999;
 cursor:not-allowed;
 }
 
 #reader{
-margin-bottom:22px;
+margin-bottom:20px;
 }
 
 #loading{
 padding:13px;
 margin-bottom:18px;
-background:#e8f1ff;
+background:#e6f0ff;
 border-left:5px solid #0066cc;
 font-weight:bold;
 }
@@ -124,8 +119,8 @@ font-weight:bold;
 .success{
 padding:14px;
 margin-top:18px;
-color:#146c2e;
-background:#e8f7ed;
+background:#e7f7eb;
+color:#176b2d;
 border-left:5px solid #28a745;
 font-weight:bold;
 }
@@ -133,14 +128,14 @@ font-weight:bold;
 .error{
 padding:14px;
 margin-top:18px;
-color:#a00000;
 background:#ffe9e9;
+color:#a00000;
 border-left:5px solid #d60000;
 font-weight:bold;
 }
 
 .required{
-color:#d00000;
+color:red;
 }
 
 </style>
@@ -151,14 +146,16 @@ color:#d00000;
 <body>
 
 
-<div class="app-container">
+<div class="app">
 
 
 <h1>BMW Rework App V2</h1>
 
-<p class="subtitle">
+<div class="subtitle">
+
 Rework Data Registration
-</p>
+
+</div>
 
 
 <div id="loading">
@@ -172,8 +169,7 @@ Loading dashboard data...
 
 
 <form
-id="reworkForm"
-onsubmit="saveData(event)">
+id="reworkForm">
 
 
 <!-- SERIAL NUMBER -->
@@ -181,20 +177,17 @@ onsubmit="saveData(event)">
 
 <div class="form-group">
 
-<label for="serial">
+<label>
 
 Serial Number
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
 <input
 id="serial"
 type="text"
-autocomplete="off"
 required>
 
 </div>
@@ -205,13 +198,11 @@ required>
 
 <div class="form-group">
 
-<label for="defect">
+<label>
 
 Defect
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -221,7 +212,7 @@ required>
 
 <option value="">
 
-Loading defects...
+Loading...
 
 </option>
 
@@ -235,13 +226,11 @@ Loading defects...
 
 <div class="form-group">
 
-<label for="foundAt">
+<label>
 
 Found at
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -265,13 +254,11 @@ Loading...
 
 <div class="form-group">
 
-<label for="location">
+<label>
 
 Location
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -295,13 +282,11 @@ Loading...
 
 <div class="form-group">
 
-<label for="contact">
+<label>
 
 LMS Contact Email
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -325,13 +310,11 @@ Loading...
 
 <div class="form-group">
 
-<label for="oem">
+<label>
 
 OEM
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -341,7 +324,7 @@ required>
 
 <option value="">
 
-Loading OEM list...
+Loading...
 
 </option>
 
@@ -355,15 +338,14 @@ Loading OEM list...
 
 <div class="form-group">
 
-<label for="comment">
+<label>
 
 Comment
 
 </label>
 
 <textarea
-id="comment"
-placeholder="Enter additional information">
+id="comment">
 
 </textarea>
 
@@ -375,13 +357,11 @@ placeholder="Enter additional information">
 
 <div class="form-group">
 
-<label for="qty">
+<label>
 
 Quantity
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -390,26 +370,25 @@ id="qty"
 type="number"
 value="1"
 min="1"
-step="1"
 required>
 
 </div>
 
 
-<!-- CUSTOMER LABEL PHOTO -->
+<!-- CUSTOMER LABEL -->
 
 
 <div class="form-group">
 
-<label for="labelPhoto">
+<label>
 
 Customer Label
 
 </label>
 
 <input
-type="file"
 id="labelPhoto"
+type="file"
 accept="image/*"
 capture="environment">
 
@@ -421,15 +400,15 @@ capture="environment">
 
 <div class="form-group">
 
-<label for="photo">
+<label>
 
 Failure Photo
 
 </label>
 
 <input
-type="file"
 id="photo"
+type="file"
 accept="image/*"
 capture="environment">
 
@@ -441,13 +420,11 @@ capture="environment">
 
 <div class="form-group">
 
-<label for="user">
+<label>
 
 User
 
-<span class="required">
-*
-</span>
+<span class="required">*</span>
 
 </label>
 
@@ -458,9 +435,6 @@ value="Konrad"
 required>
 
 </div>
-
-
-<!-- SAVE -->
 
 
 <button
@@ -485,7 +459,7 @@ SAVE RECORD
 
 
 /************************************************
- * API
+ * GOOGLE APPS SCRIPT API
  ************************************************/
 
 
@@ -499,136 +473,11 @@ const API_URL =
  ************************************************/
 
 
-let dashboard = null;
-
 let saveInProgress = false;
 
 let lastScan = "";
 
 let lastScanTime = 0;
-
-
-/************************************************
- * SUCCESS SOUND
- ************************************************/
-
-
-function beepSuccess(){
-
-
-try{
-
-
-const AudioContextClass =
-
-window.AudioContext ||
-
-window.webkitAudioContext;
-
-
-if(
-!AudioContextClass
-){
-
-return;
-
-}
-
-
-const audioContext =
-
-new AudioContextClass();
-
-
-const oscillator1 =
-
-audioContext
-.createOscillator();
-
-
-oscillator1
-.frequency
-.value = 1500;
-
-
-oscillator1
-.connect(
-
-audioContext.destination
-
-);
-
-
-oscillator1
-.start();
-
-
-oscillator1
-.stop(
-
-audioContext.currentTime +
-
-0.08
-
-);
-
-
-const oscillator2 =
-
-audioContext
-.createOscillator();
-
-
-oscillator2
-.frequency
-.value = 2200;
-
-
-oscillator2
-.connect(
-
-audioContext.destination
-
-);
-
-
-oscillator2
-.start(
-
-audioContext.currentTime +
-
-0.12
-
-);
-
-
-oscillator2
-.stop(
-
-audioContext.currentTime +
-
-0.20
-
-);
-
-
-}
-catch(error){
-
-
-console.log(
-
-"Sound unavailable",
-
-error
-
-);
-
-
-}
-
-
-}
 
 
 /************************************************
@@ -643,32 +492,22 @@ decodedText
 ){
 
 
-const now =
+const currentTime =
 
 Date.now();
 
 
 if(
 
-decodedText ===
-
-lastScan
+decodedText === lastScan
 
 &&
 
-now -
-
-lastScanTime
-
-<
-
-10000
+currentTime - lastScanTime < 10000
 
 ){
 
-
 return;
-
 
 }
 
@@ -680,7 +519,7 @@ decodedText;
 
 lastScanTime =
 
-now;
+currentTime;
 
 
 document
@@ -702,37 +541,19 @@ navigator.vibrate
 
 ){
 
-
 navigator.vibrate(
 
-[
-
-100,
-
-50,
-
-100
-
-]
+[100,50,100]
 
 );
 
-
 }
-
-
-beepSuccess();
 
 
 }
 
 
-/************************************************
- * START QR SCANNER
- ************************************************/
-
-
-const scanner =
+const qrScanner =
 
 new Html5QrcodeScanner(
 
@@ -742,26 +563,14 @@ new Html5QrcodeScanner(
 
 fps:10,
 
-qrbox:{
+qrbox:250
 
-width:250,
-
-height:250
-
-},
-
-rememberLastUsedCamera:
-
-true
-
-},
-
-false
+}
 
 );
 
 
-scanner.render(
+qrScanner.render(
 
 onScanSuccess
 
@@ -788,23 +597,18 @@ document.getElementById(
 try{
 
 
+const apiAddress =
+
+API_URL +
+
+"?action=getDashboard";
+
+
 const response =
 
 await fetch(
 
-API_URL +
-
-"?action=getDashboard&t=" +
-
-Date.now(),
-
-{
-
-cache:
-
-"no-store"
-
-}
+apiAddress
 
 );
 
@@ -815,20 +619,18 @@ if(
 
 ){
 
-
 throw new Error(
 
-"API HTTP error: " +
+"HTTP " +
 
 response.status
 
 );
 
-
 }
 
 
-dashboard =
+const dashboard =
 
 await response.json();
 
@@ -841,23 +643,21 @@ dashboard.status ===
 
 ){
 
-
 throw new Error(
 
 dashboard.message
 
 );
 
-
 }
 
 
 /*
- * DEFECT
- */
+DEFECT
+*/
 
 
-fillDefectSelect(
+fillDefects(
 
 dashboard.defects
 
@@ -865,11 +665,11 @@ dashboard.defects
 
 
 /*
- * FOUND AT
- */
+FOUND AT
+*/
 
 
-fillStandardSelect(
+fillSelect(
 
 "foundAt",
 
@@ -877,16 +677,15 @@ dashboard.foundAt,
 
 "Select Found at"
 
-
 );
 
 
 /*
- * LOCATION
- */
+LOCATION
+*/
 
 
-fillStandardSelect(
+fillSelect(
 
 "location",
 
@@ -894,16 +693,15 @@ dashboard.locations,
 
 "Select Location"
 
-
 );
 
 
 /*
- * LMS CONTACT
- */
+CONTACT
+*/
 
 
-fillStandardSelect(
+fillSelect(
 
 "contact",
 
@@ -911,23 +709,21 @@ dashboard.contacts,
 
 "Select LMS Contact"
 
-
 );
 
 
 /*
- * OEM
- */
+OEM
+*/
 
 
-fillStandardSelect(
+fillSelect(
 
 "oem",
 
 dashboard.oems,
 
 "Select OEM"
-
 
 );
 
@@ -943,8 +739,6 @@ catch(error){
 
 console.error(
 
-"Dashboard error:",
-
 error
 
 );
@@ -959,11 +753,7 @@ loading.innerHTML =
 
 "Dashboard loading error: " +
 
-escapeHtml(
-
-error.message
-
-);
+error.message;
 
 
 }
@@ -973,11 +763,11 @@ error.message
 
 
 /************************************************
- * FILL DEFECT SELECT
+ * DEFECT LIST
  ************************************************/
 
 
-function fillDefectSelect(
+function fillDefects(
 
 items
 
@@ -995,16 +785,11 @@ document.getElementById(
 
 select.innerHTML =
 
-"";
+'<option value="">' +
 
+'Select defect' +
 
-addPlaceholder(
-
-select,
-
-"Select defect"
-
-);
+'</option>';
 
 
 if(
@@ -1017,9 +802,7 @@ items
 
 ){
 
-
 return;
-
 
 }
 
@@ -1072,13 +855,13 @@ option
 
 
 /************************************************
- * FILL STANDARD SELECT
+ * STANDARD LIST
  ************************************************/
 
 
-function fillStandardSelect(
+function fillSelect(
 
-elementId,
+element,
 
 items,
 
@@ -1091,7 +874,7 @@ const select =
 
 document.getElementById(
 
-elementId
+element
 
 );
 
@@ -1101,11 +884,28 @@ select.innerHTML =
 "";
 
 
-addPlaceholder(
+const firstOption =
 
-select,
+document.createElement(
 
-placeholder
+"option"
+
+);
+
+
+firstOption.value =
+
+"";
+
+
+firstOption.textContent =
+
+placeholder;
+
+
+select.appendChild(
+
+firstOption
 
 );
 
@@ -1120,9 +920,7 @@ items
 
 ){
 
-
 return;
-
 
 }
 
@@ -1132,27 +930,14 @@ items.forEach(
 function(item){
 
 
-const cleanItem =
-
-String(
-
-item || ""
-
-)
-
-.trim();
-
-
 if(
 
-cleanItem === ""
+!item
 
 ){
-
 
 return;
 
-
 }
 
 
@@ -1167,12 +952,12 @@ document.createElement(
 
 option.value =
 
-cleanItem;
+item;
 
 
 option.textContent =
 
-cleanItem;
+item;
 
 
 select.appendChild(
@@ -1191,64 +976,11 @@ option
 
 
 /************************************************
- * ADD PLACEHOLDER
+ * PHOTO TO BASE64
  ************************************************/
 
 
-function addPlaceholder(
-
-select,
-
-text
-
-){
-
-
-const option =
-
-document.createElement(
-
-"option"
-
-);
-
-
-option.value =
-
-"";
-
-
-option.textContent =
-
-text;
-
-
-option.disabled =
-
-true;
-
-
-option.selected =
-
-true;
-
-
-select.appendChild(
-
-option
-
-);
-
-
-}
-
-
-/************************************************
- * FILE TO BASE64
- ************************************************/
-
-
-function fileToBase64(
+function readPhoto(
 
 file
 
@@ -1272,16 +1004,9 @@ if(
 
 ){
 
-
-resolve(
-
-""
-
-);
-
+resolve("");
 
 return;
-
 
 }
 
@@ -1295,13 +1020,11 @@ reader.onload =
 
 function(event){
 
-
 resolve(
 
 event.target.result
 
 );
-
 
 };
 
@@ -1310,17 +1033,15 @@ reader.onerror =
 
 function(){
 
-
 reject(
 
 new Error(
 
-"Photo reading error."
+"Photo reading error"
 
 )
 
 );
-
 
 };
 
@@ -1341,8 +1062,25 @@ file
 
 
 /************************************************
- * SAVE DATA
+ * SAVE
  ************************************************/
+
+
+document
+
+.getElementById(
+
+"reworkForm"
+
+)
+
+.addEventListener(
+
+"submit",
+
+saveData
+
+);
 
 
 async function saveData(
@@ -1361,14 +1099,91 @@ saveInProgress
 
 ){
 
-
 return;
-
 
 }
 
 
-const serial =
+saveInProgress =
+
+true;
+
+
+const button =
+
+document.getElementById(
+
+"saveButton"
+
+);
+
+
+button.disabled =
+
+true;
+
+
+button.textContent =
+
+"SAVING...";
+
+
+try{
+
+
+const defect =
+
+document
+
+.getElementById(
+
+"defect"
+
+)
+
+.value
+
+.split("|");
+
+
+const labelPhoto =
+
+await readPhoto(
+
+document
+
+.getElementById(
+
+"labelPhoto"
+
+)
+
+.files[0]
+
+);
+
+
+const failurePhoto =
+
+await readPhoto(
+
+document
+
+.getElementById(
+
+"photo"
+
+)
+
+.files[0]
+
+);
+
+
+const payload = {
+
+
+serial:
 
 document
 
@@ -1380,147 +1195,20 @@ document
 
 .value
 
-.trim();
-
-
-if(
-
-serial === ""
-
-){
-
-
-alert(
-
-"Scan QR code or enter Serial Number."
-
-);
-
-
-return;
-
-
-}
-
-
-saveInProgress =
-
-true;
-
-
-const saveButton =
-
-document.getElementById(
-
-"saveButton"
-
-);
-
-
-saveButton.disabled =
-
-true;
-
-
-saveButton.textContent =
-
-"SAVING...";
-
-
-clearStatus();
-
-
-try{
-
-
-const defectValue =
-
-document
-
-.getElementById(
-
-"defect"
-
-)
-
-.value;
-
-
-const defectParts =
-
-defectValue.split(
-
-"|"
-
-);
-
-
-const labelFile =
-
-document
-
-.getElementById(
-
-"labelPhoto"
-
-)
-
-.files[0];
-
-
-const failureFile =
-
-document
-
-.getElementById(
-
-"photo"
-
-)
-
-.files[0];
-
-
-const labelImage =
-
-await fileToBase64(
-
-labelFile
-
-);
-
-
-const image =
-
-await fileToBase64(
-
-failureFile
-
-);
-
-
-/*
- * DATA SENT TO APPS SCRIPT
- */
-
-
-const payload = {
-
-
-serial:
-
-serial,
+.trim(),
 
 
 defectCode:
 
-defectParts[0] || "",
+defect[0],
 
 
 defectName:
 
-defectParts
+defect
+
 .slice(1)
+
 .join("|"),
 
 
@@ -1586,14 +1274,10 @@ document
 
 )
 
-.value
-
-.trim(),
+.value,
 
 
 qty:
-
-Number(
 
 document
 
@@ -1603,9 +1287,7 @@ document
 
 )
 
-.value
-
-),
+.value,
 
 
 user:
@@ -1618,19 +1300,17 @@ document
 
 )
 
-.value
-
-.trim(),
+.value,
 
 
 labelImage:
 
-labelImage,
+labelPhoto,
 
 
 image:
 
-image
+failurePhoto
 
 
 };
@@ -1661,50 +1341,9 @@ payload
 );
 
 
-const responseText =
+const result =
 
-await response.text();
-
-
-console.log(
-
-responseText
-
-);
-
-
-let result;
-
-
-try{
-
-
-result =
-
-JSON.parse(
-
-responseText
-
-);
-
-
-}
-catch(error){
-
-
-throw new Error(
-
-"Incorrect API response."
-
-);
-
-
-}
-
-
-/*
- * DUPLICATE
- */
+await response.json();
 
 
 if(
@@ -1716,20 +1355,9 @@ result.status ===
 ){
 
 
-showError(
-
-"Serial Number already exists: " +
-
-serial
-
-);
-
-
 alert(
 
-"Serial Number already exists:\n\n" +
-
-serial
+"Serial Number already exists"
 
 );
 
@@ -1738,11 +1366,6 @@ return;
 
 
 }
-
-
-/*
- * API ERROR
- */
 
 
 if(
@@ -1756,9 +1379,7 @@ result.status !==
 
 throw new Error(
 
-result.message ||
-
-"Record was not saved."
+result.message
 
 );
 
@@ -1766,128 +1387,23 @@ result.message ||
 }
 
 
-/*
- * SUCCESS
- */
+document
 
+.getElementById(
 
-beepSuccess();
+"status"
 
+)
 
-if(
+.innerHTML =
 
-navigator.vibrate
+'<div class="success">' +
 
-){
-
-
-navigator.vibrate(
-
-[
-
-100,
-
-50,
-
-100
-
-]
-
-);
-
-
-}
-
-
-showSuccess(
-
-"Saved: " +
+'Saved: ' +
 
 result.id +
 
-" | OEM: " +
-
-result.oem
-
-);
-
-
-resetForm();
-
-
-window.scrollTo({
-
-top:0,
-
-behavior:
-
-"smooth"
-
-});
-
-
-}
-catch(error){
-
-
-console.error(
-
-"Save error:",
-
-error
-
-);
-
-
-showError(
-
-"Save error: " +
-
-error.message
-
-);
-
-
-alert(
-
-"Save error:\n\n" +
-
-error.message
-
-);
-
-
-}
-finally{
-
-
-saveInProgress =
-
-false;
-
-
-saveButton.disabled =
-
-false;
-
-
-saveButton.textContent =
-
-"SAVE RECORD";
-
-
-}
-
-
-}
-
-
-/************************************************
- * RESET FORM
- ************************************************/
-
-
-function resetForm(){
+'</div>';
 
 
 document
@@ -1920,6 +1436,19 @@ document
 
 .getElementById(
 
+"qty"
+
+)
+
+.value =
+
+"1";
+
+
+document
+
+.getElementById(
+
 "photo"
 
 )
@@ -1942,82 +1471,15 @@ document
 "";
 
 
-document
-
-.getElementById(
-
-"qty"
-
-)
-
-.value =
-
-"1";
-
-
 }
+catch(error){
 
 
-/************************************************
- * STATUS
- ************************************************/
+console.error(
 
+error
 
-function clearStatus(){
-
-
-document
-
-.getElementById(
-
-"status"
-
-)
-
-.innerHTML =
-
-"";
-
-
-}
-
-
-function showSuccess(
-
-message
-
-){
-
-
-document
-
-.getElementById(
-
-"status"
-
-)
-
-.innerHTML =
-
-'<div class="success">' +
-
-escapeHtml(
-
-message
-
-) +
-
-"</div>";
-
-
-}
-
-
-function showError(
-
-message
-
-){
+);
 
 
 document
@@ -2032,82 +1494,40 @@ document
 
 '<div class="error">' +
 
-escapeHtml(
+'Save error: ' +
 
-message
+error.message +
 
-) +
+'</div>';
 
-"</div>";
+
+}
+finally{
+
+
+saveInProgress =
+
+false;
+
+
+button.disabled =
+
+false;
+
+
+button.textContent =
+
+"SAVE RECORD";
+
+
+}
 
 
 }
 
 
 /************************************************
- * HTML SECURITY
- ************************************************/
-
-
-function escapeHtml(
-
-value
-
-){
-
-
-return String(
-
-value
-
-)
-
-.replace(
-
-/&/g,
-
-"&amp;"
-
-)
-
-.replace(
-
-/</g,
-
-"&lt;"
-
-)
-
-.replace(
-
-/>/g,
-
-"&gt;"
-
-)
-
-.replace(
-
-/"/g,
-
-"&quot;"
-
-)
-
-.replace(
-
-/'/g,
-
-"&#039;"
-
-);
-
-
-}
-
-
-/************************************************
- * START APPLICATION
+ * START
  ************************************************/
 
 
