@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -9,9 +10,14 @@
 name="viewport"
 content="width=device-width, initial-scale=1">
 
-<title>BMW Rework App V2</title>
+<title>
+BMW Rework App V2
+</title>
 
-<script src="https://unpkg.com/html5-qrcode"></script>
+<script
+src="https://unpkg.com/html5-qrcode">
+</script>
+
 
 <style>
 
@@ -20,122 +26,199 @@ box-sizing:border-box;
 }
 
 body{
-font-family:Arial,sans-serif;
-padding:15px;
-max-width:700px;
+
+font-family:
+Arial,
+Helvetica,
+sans-serif;
+
+max-width:720px;
+
 margin:auto;
-background:#f4f6f8;
+
+padding:15px;
+
+background:#f3f5f7;
+
+color:#222;
+
 }
 
 .app{
-background:#ffffff;
+
+background:white;
+
 padding:20px;
+
 border-radius:12px;
-box-shadow:0 2px 12px rgba(0,0,0,0.12);
+
+box-shadow:
+0 3px 15px
+rgba(0,0,0,.12);
+
 }
 
 h1{
+
 text-align:center;
+
 font-size:25px;
-margin-top:0;
-margin-bottom:5px;
+
+margin:0;
+
 }
 
 .subtitle{
+
 text-align:center;
+
 color:#666;
+
+margin-top:8px;
+
 margin-bottom:25px;
+
 }
 
-.form-group{
+#reader{
+
+margin-bottom:20px;
+
+}
+
+.group{
+
 margin-top:17px;
+
 }
 
 label{
+
 display:block;
+
 font-size:14px;
+
 font-weight:bold;
+
 margin-bottom:6px;
+
 }
 
 input,
 select,
 textarea,
 button{
+
 width:100%;
+
+font-family:
+Arial,
+sans-serif;
+
 font-size:16px;
-font-family:Arial,sans-serif;
-box-sizing:border-box;
+
 border-radius:7px;
+
 }
 
 input,
 select,
 textarea{
+
 padding:12px;
-border:1px solid #aaa;
+
+border:
+1px solid #aaa;
+
 background:white;
+
 }
 
 textarea{
-min-height:90px;
-resize:vertical;
-}
 
-input:focus,
-select:focus,
-textarea:focus{
-outline:none;
-border:2px solid #0066cc;
+min-height:90px;
+
+resize:vertical;
+
 }
 
 button{
-padding:15px;
+
 margin-top:25px;
-background:#0066cc;
-color:white;
-font-weight:bold;
+
+padding:15px;
+
 border:none;
+
+background:#0066cc;
+
+color:white;
+
+font-weight:bold;
+
 cursor:pointer;
+
 }
 
 button:disabled{
+
 background:#999;
-cursor:not-allowed;
-}
 
-#reader{
-margin-bottom:20px;
-}
-
-#loading{
-padding:13px;
-margin-bottom:18px;
-background:#e6f0ff;
-border-left:5px solid #0066cc;
-font-weight:bold;
-}
-
-.success{
-padding:14px;
-margin-top:18px;
-background:#e7f7eb;
-color:#176b2d;
-border-left:5px solid #28a745;
-font-weight:bold;
-}
-
-.error{
-padding:14px;
-margin-top:18px;
-background:#ffe9e9;
-color:#a00000;
-border-left:5px solid #d60000;
-font-weight:bold;
 }
 
 .required{
-color:red;
+
+color:#d00000;
+
+}
+
+.info{
+
+padding:13px;
+
+background:#e8f1ff;
+
+border-left:
+5px solid #0066cc;
+
+font-weight:bold;
+
+margin-bottom:18px;
+
+}
+
+.success{
+
+padding:14px;
+
+margin-top:18px;
+
+background:#e7f7eb;
+
+border-left:
+5px solid #28a745;
+
+color:#176b2d;
+
+font-weight:bold;
+
+}
+
+.error{
+
+padding:14px;
+
+margin-top:18px;
+
+background:#ffe8e8;
+
+border-left:
+5px solid #d00000;
+
+color:#9e0000;
+
+font-weight:bold;
+
 }
 
 </style>
@@ -149,7 +232,12 @@ color:red;
 <div class="app">
 
 
-<h1>BMW Rework App V2</h1>
+<h1>
+
+BMW Rework App V2
+
+</h1>
+
 
 <div class="subtitle">
 
@@ -158,185 +246,180 @@ Rework Data Registration
 </div>
 
 
-<div id="loading">
+<div
+id="loading"
+class="info">
 
-Loading dashboard data...
+Loading dashboard...
 
 </div>
 
 
-<div id="reader"></div>
+<div id="reader">
+
+</div>
 
 
-<form
-id="reworkForm">
+<form id="form">
 
 
-<!-- SERIAL NUMBER -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 Serial Number
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <input
+
 id="serial"
-type="text"
-required>
+
+required
+
+autocomplete="off">
 
 </div>
 
 
-<!-- DEFECT -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 Defect
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <select
+
 id="defect"
+
 required>
-
-<option value="">
-
-Loading...
-
-</option>
 
 </select>
 
 </div>
 
 
-<!-- FOUND AT -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 Found at
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <select
+
 id="foundAt"
+
 required>
-
-<option value="">
-
-Loading...
-
-</option>
 
 </select>
 
 </div>
 
 
-<!-- LOCATION -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 Location
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <select
+
 id="location"
+
 required>
-
-<option value="">
-
-Loading...
-
-</option>
 
 </select>
 
 </div>
 
 
-<!-- LMS CONTACT -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 LMS Contact Email
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <select
+
 id="contact"
+
 required>
-
-<option value="">
-
-Loading...
-
-</option>
 
 </select>
 
 </div>
 
 
-<!-- OEM -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 OEM
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <select
+
 id="oem"
+
 required>
-
-<option value="">
-
-Loading...
-
-</option>
 
 </select>
 
 </div>
 
 
-<!-- COMMENT -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
@@ -344,7 +427,9 @@ Comment
 
 </label>
 
+
 <textarea
+
 id="comment">
 
 </textarea>
@@ -352,33 +437,37 @@ id="comment">
 </div>
 
 
-<!-- QUANTITY -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 Quantity
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <input
+
 id="qty"
+
 type="number"
-value="1"
+
 min="1"
+
+value="1"
+
 required>
 
 </div>
 
 
-<!-- CUSTOMER LABEL -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
@@ -386,19 +475,21 @@ Customer Label
 
 </label>
 
+
 <input
+
 id="labelPhoto"
+
 type="file"
+
 accept="image/*"
+
 capture="environment">
 
 </div>
 
 
-<!-- FAILURE PHOTO -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
@@ -406,39 +497,50 @@ Failure Photo
 
 </label>
 
+
 <input
+
 id="photo"
+
 type="file"
+
 accept="image/*"
+
 capture="environment">
 
 </div>
 
 
-<!-- USER -->
-
-
-<div class="form-group">
+<div class="group">
 
 <label>
 
 User
 
-<span class="required">*</span>
+<span class="required">
+
+*
+
+</span>
 
 </label>
 
+
 <input
+
 id="user"
-type="text"
+
 value="Konrad"
+
 required>
 
 </div>
 
 
 <button
-id="saveButton"
+
+id="save"
+
 type="submit">
 
 SAVE RECORD
@@ -449,7 +551,9 @@ SAVE RECORD
 </form>
 
 
-<div id="status"></div>
+<div id="status">
+
+</div>
 
 
 </div>
@@ -462,7 +566,6 @@ SAVE RECORD
  * GOOGLE APPS SCRIPT API
  ************************************************/
 
-
 const API_URL =
 
 "https://script.google.com/macros/s/AKfycby6V6Md2nCXcavnTMWOUILAPPWeQ_lE23NwQ1lnH6KIFmMhik8tSXHT2ihy-cgC9H27/exec";
@@ -472,8 +575,7 @@ const API_URL =
  * VARIABLES
  ************************************************/
 
-
-let saveInProgress = false;
+let saving = false;
 
 let lastScan = "";
 
@@ -481,45 +583,41 @@ let lastScanTime = 0;
 
 
 /************************************************
- * QR SCANNER
+ * QR
  ************************************************/
-
 
 function onScanSuccess(
 
-decodedText
+text
 
 ){
 
 
-const currentTime =
+const now =
 
 Date.now();
 
 
-if(
+if (
 
-decodedText === lastScan
+text === lastScan &&
 
-&&
+now -
 
-currentTime - lastScanTime < 10000
+lastScanTime <
 
-){
+10000
+
+) {
 
 return;
 
 }
 
 
-lastScan =
+lastScan = text;
 
-decodedText;
-
-
-lastScanTime =
-
-currentTime;
+lastScanTime = now;
 
 
 document
@@ -530,16 +628,14 @@ document
 
 )
 
-.value =
-
-decodedText;
+.value = text;
 
 
-if(
+if (
 
 navigator.vibrate
 
-){
+) {
 
 navigator.vibrate(
 
@@ -553,7 +649,7 @@ navigator.vibrate(
 }
 
 
-const qrScanner =
+const scanner =
 
 new Html5QrcodeScanner(
 
@@ -561,16 +657,18 @@ new Html5QrcodeScanner(
 
 {
 
-fps:10,
+fps:
+10,
 
-qrbox:250
+qrbox:
+250
 
 }
 
 );
 
 
-qrScanner.render(
+scanner.render(
 
 onScanSuccess
 
@@ -578,16 +676,17 @@ onScanSuccess
 
 
 /************************************************
- * LOAD DASHBOARD
+ * DASHBOARD
  ************************************************/
-
 
 async function loadDashboard(){
 
 
 const loading =
 
-document.getElementById(
+document
+
+.getElementById(
 
 "loading"
 
@@ -597,131 +696,112 @@ document.getElementById(
 try{
 
 
-const apiAddress =
-
-API_URL +
-
-"?action=getDashboard";
-
-
 const response =
 
 await fetch(
 
-apiAddress
+API_URL +
+
+"?action=getDashboard"
 
 );
 
 
-if(
+const text =
 
-!response.ok
+await response.text();
 
-){
+
+let data;
+
+
+try{
+
+data =
+
+JSON.parse(
+
+text
+
+);
+
+}
+
+catch(error){
 
 throw new Error(
 
-"HTTP " +
-
-response.status
+"API did not return JSON."
 
 );
 
 }
 
 
-const dashboard =
+if (
 
-await response.json();
+data.status !==
 
+"OK"
 
-if(
-
-dashboard.status ===
-
-"ERROR"
-
-){
+) {
 
 throw new Error(
 
-dashboard.message
+data.message ||
+
+"Dashboard error"
 
 );
 
 }
-
-
-/*
-DEFECT
-*/
 
 
 fillDefects(
 
-dashboard.defects
+data.defects
 
 );
-
-
-/*
-FOUND AT
-*/
 
 
 fillSelect(
 
 "foundAt",
 
-dashboard.foundAt,
+data.foundAt,
 
 "Select Found at"
 
 );
 
 
-/*
-LOCATION
-*/
-
-
 fillSelect(
 
 "location",
 
-dashboard.locations,
+data.locations,
 
 "Select Location"
 
 );
 
 
-/*
-CONTACT
-*/
-
-
 fillSelect(
 
 "contact",
 
-dashboard.contacts,
+data.contacts,
 
 "Select LMS Contact"
 
 );
 
 
-/*
-OEM
-*/
-
-
 fillSelect(
 
 "oem",
 
-dashboard.oems,
+data.oems,
 
 "Select OEM"
 
@@ -734,6 +814,7 @@ loading.style.display =
 
 
 }
+
 catch(error){
 
 
@@ -749,9 +830,9 @@ loading.className =
 "error";
 
 
-loading.innerHTML =
+loading.textContent =
 
-"Dashboard loading error: " +
+"Dashboard error: " +
 
 error.message;
 
@@ -763,9 +844,8 @@ error.message;
 
 
 /************************************************
- * DEFECT LIST
+ * DEFECT SELECT
  ************************************************/
-
 
 function fillDefects(
 
@@ -776,7 +856,9 @@ items
 
 const select =
 
-document.getElementById(
+document
+
+.getElementById(
 
 "defect"
 
@@ -792,21 +874,6 @@ select.innerHTML =
 '</option>';
 
 
-if(
-
-!Array.isArray(
-
-items
-
-)
-
-){
-
-return;
-
-}
-
-
 items.forEach(
 
 function(item){
@@ -814,7 +881,9 @@ function(item){
 
 const option =
 
-document.createElement(
+document
+
+.createElement(
 
 "option"
 
@@ -855,13 +924,12 @@ option
 
 
 /************************************************
- * STANDARD LIST
+ * STANDARD SELECT
  ************************************************/
-
 
 function fillSelect(
 
-element,
+id,
 
 items,
 
@@ -872,9 +940,11 @@ placeholder
 
 const select =
 
-document.getElementById(
+document
 
-element
+.getElementById(
+
+id
 
 );
 
@@ -884,45 +954,32 @@ select.innerHTML =
 "";
 
 
-const firstOption =
+const first =
 
-document.createElement(
+document
+
+.createElement(
 
 "option"
 
 );
 
 
-firstOption.value =
+first.value =
 
 "";
 
 
-firstOption.textContent =
+first.textContent =
 
 placeholder;
 
 
 select.appendChild(
 
-firstOption
+first
 
 );
-
-
-if(
-
-!Array.isArray(
-
-items
-
-)
-
-){
-
-return;
-
-}
 
 
 items.forEach(
@@ -930,20 +987,11 @@ items.forEach(
 function(item){
 
 
-if(
-
-!item
-
-){
-
-return;
-
-}
-
-
 const option =
 
-document.createElement(
+document
+
+.createElement(
 
 "option"
 
@@ -976,11 +1024,10 @@ option
 
 
 /************************************************
- * PHOTO TO BASE64
+ * PHOTO
  ************************************************/
 
-
-function readPhoto(
+function photoToBase64(
 
 file
 
@@ -998,11 +1045,7 @@ reject
 ){
 
 
-if(
-
-!file
-
-){
+if (!file) {
 
 resolve("");
 
@@ -1037,7 +1080,7 @@ reject(
 
 new Error(
 
-"Photo reading error"
+"Photo reading error."
 
 )
 
@@ -1065,12 +1108,11 @@ file
  * SAVE
  ************************************************/
 
-
 document
 
 .getElementById(
 
-"reworkForm"
+"form"
 
 )
 
@@ -1078,12 +1120,12 @@ document
 
 "submit",
 
-saveData
+saveRecord
 
 );
 
 
-async function saveData(
+async function saveRecord(
 
 event
 
@@ -1093,35 +1135,28 @@ event
 event.preventDefault();
 
 
-if(
-
-saveInProgress
-
-){
+if (saving) {
 
 return;
 
 }
 
 
-saveInProgress =
-
-true;
+saving = true;
 
 
 const button =
 
-document.getElementById(
+document
 
-"saveButton"
+.getElementById(
+
+"save"
 
 );
 
 
-button.disabled =
-
-true;
-
+button.disabled = true;
 
 button.textContent =
 
@@ -1146,9 +1181,9 @@ document
 .split("|");
 
 
-const labelPhoto =
+const label =
 
-await readPhoto(
+await photoToBase64(
 
 document
 
@@ -1163,9 +1198,9 @@ document
 );
 
 
-const failurePhoto =
+const failure =
 
-await readPhoto(
+await photoToBase64(
 
 document
 
@@ -1185,17 +1220,11 @@ const payload = {
 
 serial:
 
-document
-
-.getElementById(
+value(
 
 "serial"
 
-)
-
-.value
-
-.trim(),
+),
 
 
 defectCode:
@@ -1214,103 +1243,75 @@ defect
 
 foundAt:
 
-document
-
-.getElementById(
+value(
 
 "foundAt"
 
-)
-
-.value,
+),
 
 
 location:
 
-document
-
-.getElementById(
+value(
 
 "location"
 
-)
-
-.value,
+),
 
 
 contact:
 
-document
-
-.getElementById(
+value(
 
 "contact"
 
-)
-
-.value,
+),
 
 
 oem:
 
-document
-
-.getElementById(
+value(
 
 "oem"
 
-)
-
-.value,
+),
 
 
 comment:
 
-document
-
-.getElementById(
+value(
 
 "comment"
 
-)
-
-.value,
+),
 
 
 qty:
 
-document
-
-.getElementById(
+value(
 
 "qty"
 
-)
-
-.value,
+),
 
 
 user:
 
-document
-
-.getElementById(
+value(
 
 "user"
 
-)
-
-.value,
+),
 
 
 labelImage:
 
-labelPhoto,
+label,
 
 
 image:
 
-failurePhoto
+failure
 
 
 };
@@ -1346,36 +1347,36 @@ const result =
 await response.json();
 
 
-if(
+if (
 
 result.status ===
 
 "DUPLICATE"
 
-){
+) {
 
 
 alert(
 
-"Serial Number already exists"
+"Serial Number already exists:\n\n" +
+
+payload.serial
 
 );
 
 
 return;
 
-
 }
 
 
-if(
+if (
 
 result.status !==
 
 "OK"
 
-){
-
+) {
 
 throw new Error(
 
@@ -1383,95 +1384,27 @@ result.message
 
 );
 
-
 }
 
 
-document
+showSuccess(
 
-.getElementById(
-
-"status"
-
-)
-
-.innerHTML =
-
-'<div class="success">' +
-
-'Saved: ' +
+"Saved: " +
 
 result.id +
 
-'</div>';
+" | " +
+
+result.oem
+
+);
 
 
-document
-
-.getElementById(
-
-"serial"
-
-)
-
-.value =
-
-"";
-
-
-document
-
-.getElementById(
-
-"comment"
-
-)
-
-.value =
-
-"";
-
-
-document
-
-.getElementById(
-
-"qty"
-
-)
-
-.value =
-
-"1";
-
-
-document
-
-.getElementById(
-
-"photo"
-
-)
-
-.value =
-
-"";
-
-
-document
-
-.getElementById(
-
-"labelPhoto"
-
-)
-
-.value =
-
-"";
+resetForm();
 
 
 }
+
 catch(error){
 
 
@@ -1482,37 +1415,24 @@ error
 );
 
 
-document
+showError(
 
-.getElementById(
+"Save error: " +
 
-"status"
+error.message
 
-)
-
-.innerHTML =
-
-'<div class="error">' +
-
-'Save error: ' +
-
-error.message +
-
-'</div>';
+);
 
 
 }
+
 finally{
 
 
-saveInProgress =
-
-false;
+saving = false;
 
 
-button.disabled =
-
-false;
+button.disabled = false;
 
 
 button.textContent =
@@ -1527,9 +1447,144 @@ button.textContent =
 
 
 /************************************************
- * START
+ * HELPERS
  ************************************************/
 
+function value(
+
+id
+
+){
+
+return document
+
+.getElementById(
+
+id
+
+)
+
+.value
+
+.trim();
+
+}
+
+
+function showSuccess(
+
+message
+
+){
+
+document
+
+.getElementById(
+
+"status"
+
+)
+
+.innerHTML =
+
+'<div class="success">' +
+
+message +
+
+'</div>';
+
+}
+
+
+function showError(
+
+message
+
+){
+
+document
+
+.getElementById(
+
+"status"
+
+)
+
+.innerHTML =
+
+'<div class="error">' +
+
+message +
+
+'</div>';
+
+}
+
+
+function resetForm(){
+
+
+document
+
+.getElementById(
+
+"serial"
+
+)
+
+.value = "";
+
+
+document
+
+.getElementById(
+
+"comment"
+
+)
+
+.value = "";
+
+
+document
+
+.getElementById(
+
+"qty"
+
+)
+
+.value = "1";
+
+
+document
+
+.getElementById(
+
+"labelPhoto"
+
+)
+
+.value = "";
+
+
+document
+
+.getElementById(
+
+"photo"
+
+)
+
+.value = "";
+
+
+}
+
+
+/************************************************
+ * START
+ ************************************************/
 
 loadDashboard();
 
