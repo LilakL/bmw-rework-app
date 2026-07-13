@@ -1,323 +1,2121 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>BMW Rework App V2</title>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 
-body{
-font-family:Arial;
-padding:15px;
-max-width:700px;
-margin:auto;
-}
-
-input,select,textarea,button{
-width:100%;
-padding:12px;
-margin-top:10px;
-font-size:16px;
+*{
 box-sizing:border-box;
 }
 
+body{
+font-family:Arial,Helvetica,sans-serif;
+padding:15px;
+max-width:700px;
+margin:auto;
+background:#f4f6f8;
+color:#222;
+}
+
+.app-container{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 2px 12px rgba(0,0,0,0.10);
+}
+
+h1{
+font-size:25px;
+text-align:center;
+margin-top:0;
+margin-bottom:8px;
+}
+
+.subtitle{
+text-align:center;
+color:#666;
+margin-top:0;
+margin-bottom:22px;
+}
+
+.form-group{
+margin-top:17px;
+}
+
+label{
+display:block;
+font-size:14px;
+font-weight:bold;
+margin-bottom:6px;
+}
+
+input,
+select,
+textarea,
 button{
+width:100%;
+font-family:Arial,Helvetica,sans-serif;
+font-size:16px;
+border-radius:7px;
+}
+
+input,
+select,
+textarea{
+padding:12px;
+border:1px solid #b8bec5;
+background:white;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+outline:none;
+border:2px solid #0066cc;
+}
+
+textarea{
+min-height:95px;
+resize:vertical;
+}
+
+button{
+padding:15px;
+margin-top:25px;
 background:#0066cc;
 color:white;
+font-weight:bold;
 border:none;
 cursor:pointer;
 }
 
-.success{
-color:green;
-font-weight:bold;
+button:hover{
+background:#004f9e;
+}
+
+button:disabled{
+background:#8d99a6;
+cursor:not-allowed;
 }
 
 #reader{
-margin-bottom:20px;
+margin-bottom:22px;
+}
+
+#loading{
+padding:13px;
+margin-bottom:18px;
+background:#e8f1ff;
+border-left:5px solid #0066cc;
+font-weight:bold;
+}
+
+.success{
+padding:14px;
+margin-top:18px;
+color:#146c2e;
+background:#e8f7ed;
+border-left:5px solid #28a745;
+font-weight:bold;
+}
+
+.error{
+padding:14px;
+margin-top:18px;
+color:#a00000;
+background:#ffe9e9;
+border-left:5px solid #d60000;
+font-weight:bold;
+}
+
+.required{
+color:#d00000;
 }
 
 </style>
 
 </head>
 
+
 <body>
 
-<h2>MLK Resident App</h2>
+
+<div class="app-container">
+
+
+<h1>BMW Rework App V2</h1>
+
+<p class="subtitle">
+Rework Data Registration
+</p>
+
+
+<div id="loading">
+
+Loading dashboard data...
+
+</div>
+
 
 <div id="reader"></div>
 
-<label>Serial Number</label>
-<input id="serial">
 
-<label>Defect</label>
-<select id="defect">
-<option value="D001|Rysa">D001 - Rysa → Kratzer</option>
-<option value="D002|Funkcja">D002 - Funkcja → Funktion</option>
-<option value="D003|Wysrebrzenie">D003 - Wysrebrzenie → Versilberung</option>
-<option value="D004|Ostre krawędzie">D004 - Ostre krawędzie → Scharfe Kanten</option>
-<option value="D005|Ciało obce">D005 - Ciało obce → Fremdkörper</option>
-<option value="D006|Wtrącenie">D006 - Wtrącenie → Einschluss</option>
-<option value="D999|Inne">D999 - Inne → Sonstiges</option>
+<form
+id="reworkForm"
+onsubmit="saveData(event)">
+
+
+<!-- SERIAL NUMBER -->
+
+
+<div class="form-group">
+
+<label for="serial">
+
+Serial Number
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<input
+id="serial"
+type="text"
+autocomplete="off"
+required>
+
+</div>
+
+
+<!-- DEFECT -->
+
+
+<div class="form-group">
+
+<label for="defect">
+
+Defect
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<select
+id="defect"
+required>
+
+<option value="">
+
+Loading defects...
+
+</option>
+
 </select>
 
-<label>Comment</label>
-<textarea id="comment"></textarea>
+</div>
 
-<label>Quantity</label>
-<input id="qty" type="number" value="1">
 
-<label>OEM</label>
-<select id="oem">
-<option>BMW</option>
-<option>VW</option>
-<option>SEAT</option>
-<option>AUDI</option>
-<option>STELLANTIS</option>
+<!-- FOUND AT -->
+
+
+<div class="form-group">
+
+<label for="foundAt">
+
+Found at
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<select
+id="foundAt"
+required>
+
+<option value="">
+
+Loading...
+
+</option>
+
 </select>
 
-<label>Customer Label</label>
+</div>
+
+
+<!-- LOCATION -->
+
+
+<div class="form-group">
+
+<label for="location">
+
+Location
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<select
+id="location"
+required>
+
+<option value="">
+
+Loading...
+
+</option>
+
+</select>
+
+</div>
+
+
+<!-- LMS CONTACT -->
+
+
+<div class="form-group">
+
+<label for="contact">
+
+LMS Contact Email
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<select
+id="contact"
+required>
+
+<option value="">
+
+Loading...
+
+</option>
+
+</select>
+
+</div>
+
+
+<!-- OEM -->
+
+
+<div class="form-group">
+
+<label for="oem">
+
+OEM
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<select
+id="oem"
+required>
+
+<option value="">
+
+Loading OEM list...
+
+</option>
+
+</select>
+
+</div>
+
+
+<!-- COMMENT -->
+
+
+<div class="form-group">
+
+<label for="comment">
+
+Comment
+
+</label>
+
+<textarea
+id="comment"
+placeholder="Enter additional information">
+
+</textarea>
+
+</div>
+
+
+<!-- QUANTITY -->
+
+
+<div class="form-group">
+
+<label for="qty">
+
+Quantity
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<input
+id="qty"
+type="number"
+value="1"
+min="1"
+step="1"
+required>
+
+</div>
+
+
+<!-- CUSTOMER LABEL PHOTO -->
+
+
+<div class="form-group">
+
+<label for="labelPhoto">
+
+Customer Label
+
+</label>
+
 <input
 type="file"
 id="labelPhoto"
 accept="image/*"
 capture="environment">
 
-<label>Failure Photo</label>
+</div>
+
+
+<!-- FAILURE PHOTO -->
+
+
+<div class="form-group">
+
+<label for="photo">
+
+Failure Photo
+
+</label>
+
 <input
 type="file"
 id="photo"
 accept="image/*"
 capture="environment">
 
-<label>User</label>
-<input id="user" value="Konrad">
+</div>
 
-<button type="button" onclick="saveData()">
-SAVE
+
+<!-- USER -->
+
+
+<div class="form-group">
+
+<label for="user">
+
+User
+
+<span class="required">
+*
+</span>
+
+</label>
+
+<input
+id="user"
+type="text"
+value="Konrad"
+required>
+
+</div>
+
+
+<!-- SAVE -->
+
+
+<button
+id="saveButton"
+type="submit">
+
+SAVE RECORD
+
 </button>
+
+
+</form>
+
 
 <div id="status"></div>
 
+
+</div>
+
+
 <script>
 
+
+/************************************************
+ * API
+ ************************************************/
+
+
 const API_URL =
+
 "https://script.google.com/macros/s/AKfycby6V6Md2nCXcavnTMWOUILAPPWeQ_lE23NwQ1lnH6KIFmMhik8tSXHT2ihy-cgC9H27/exec";
 
+
+/************************************************
+ * VARIABLES
+ ************************************************/
+
+
+let dashboard = null;
+
 let saveInProgress = false;
+
 let lastScan = "";
+
 let lastScanTime = 0;
+
+
+/************************************************
+ * SUCCESS SOUND
+ ************************************************/
+
 
 function beepSuccess(){
 
-const audioCtx =
-new (window.AudioContext ||
-window.webkitAudioContext)();
-
-const osc1 =
-audioCtx.createOscillator();
-
-osc1.frequency.value = 1500;
-osc1.connect(audioCtx.destination);
-osc1.start();
-osc1.stop(audioCtx.currentTime + 0.08);
-
-const osc2 =
-audioCtx.createOscillator();
-
-osc2.frequency.value = 2200;
-osc2.connect(audioCtx.destination);
-osc2.start(audioCtx.currentTime + 0.12);
-osc2.stop(audioCtx.currentTime + 0.20);
-
-}
-
-function onScanSuccess(text){
-
-const now = Date.now();
-
-if(
-text === lastScan &&
-(now - lastScanTime) < 10000
-){
-return;
-}
-
-lastScan = text;
-lastScanTime = now;
-
-document.getElementById("serial").value = text;
-
-navigator.vibrate?.([100,50,100]);
-
-beepSuccess();
-
-}
-
-new Html5QrcodeScanner(
-"reader",
-{
-fps:10,
-qrbox:250
-}
-).render(onScanSuccess);
-
-async function saveData(){
-
-if(saveInProgress){
-return;
-}
-
-const serial =
-document.getElementById("serial")
-.value.trim();
-
-if(!serial){
-
-alert("Scan QR first");
-return;
-
-}
-
-saveInProgress = true;
-
-const defect =
-document.getElementById("defect")
-.value;
-
-const parts =
-defect.split("|");
-
-const labelFile =
-document.getElementById("labelPhoto")
-.files[0];
-
-const file =
-document.getElementById("photo")
-.files[0];
-
-let image = "";
-let labelImage = "";
-
-if(labelFile){
-
-labelImage =
-await new Promise(resolve=>{
-
-const reader =
-new FileReader();
-
-reader.onload =
-e=>resolve(e.target.result);
-
-reader.readAsDataURL(labelFile);
-
-});
-
-}
-
-if(file){
-
-image =
-await new Promise(resolve=>{
-
-const reader =
-new FileReader();
-
-reader.onload =
-e=>resolve(e.target.result);
-
-reader.readAsDataURL(file);
-
-});
-
-}
-
-const payload = {
-
-serial:serial,
-defectCode:parts[0],
-defectName:parts[1],
-comment:document.getElementById("comment").value,
-qty:document.getElementById("qty").value,
-oem:document.getElementById("oem").value,
-user:document.getElementById("user").value,
-labelImage:labelImage,
-image:image
-
-};
 
 try{
 
-const response =
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify(payload)
-});
 
-const text =
-await response.text();
+const AudioContextClass =
 
-console.log(text);
+window.AudioContext ||
 
-const result =
-JSON.parse(text);
+window.webkitAudioContext;
 
-if(result.status === "DUPLICATE"){
 
-alert(
-"Serial Number already exists:\n\n" +
-serial
-);
+if(
+!AudioContextClass
+){
 
-saveInProgress = false;
 return;
 
 }
 
-beepSuccess();
 
-navigator.vibrate?.([100,50,100]);
+const audioContext =
 
-document.getElementById("status")
-.innerHTML =
-'<p class="success">Saved: '
-+ result.id +
-'</p>';
+new AudioContextClass();
 
-document.getElementById("serial").value = "";
-document.getElementById("comment").value = "";
-document.getElementById("photo").value = "";
-document.getElementById("labelPhoto").value = "";
-document.getElementById("qty").value = "1";
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
+const oscillator1 =
 
-saveInProgress = false;
+audioContext
+.createOscillator();
+
+
+oscillator1
+.frequency
+.value = 1500;
+
+
+oscillator1
+.connect(
+
+audioContext.destination
+
+);
+
+
+oscillator1
+.start();
+
+
+oscillator1
+.stop(
+
+audioContext.currentTime +
+
+0.08
+
+);
+
+
+const oscillator2 =
+
+audioContext
+.createOscillator();
+
+
+oscillator2
+.frequency
+.value = 2200;
+
+
+oscillator2
+.connect(
+
+audioContext.destination
+
+);
+
+
+oscillator2
+.start(
+
+audioContext.currentTime +
+
+0.12
+
+);
+
+
+oscillator2
+.stop(
+
+audioContext.currentTime +
+
+0.20
+
+);
+
 
 }
 catch(error){
 
-saveInProgress = false;
 
-console.error(error);
+console.log(
 
-alert(
-"Save error:\n\n" +
-error.message
+"Sound unavailable",
+
+error
+
 );
 
-}
 
 }
+
+
+}
+
+
+/************************************************
+ * QR SCANNER
+ ************************************************/
+
+
+function onScanSuccess(
+
+decodedText
+
+){
+
+
+const now =
+
+Date.now();
+
+
+if(
+
+decodedText ===
+
+lastScan
+
+&&
+
+now -
+
+lastScanTime
+
+<
+
+10000
+
+){
+
+
+return;
+
+
+}
+
+
+lastScan =
+
+decodedText;
+
+
+lastScanTime =
+
+now;
+
+
+document
+
+.getElementById(
+
+"serial"
+
+)
+
+.value =
+
+decodedText;
+
+
+if(
+
+navigator.vibrate
+
+){
+
+
+navigator.vibrate(
+
+[
+
+100,
+
+50,
+
+100
+
+]
+
+);
+
+
+}
+
+
+beepSuccess();
+
+
+}
+
+
+/************************************************
+ * START QR SCANNER
+ ************************************************/
+
+
+const scanner =
+
+new Html5QrcodeScanner(
+
+"reader",
+
+{
+
+fps:10,
+
+qrbox:{
+
+width:250,
+
+height:250
+
+},
+
+rememberLastUsedCamera:
+
+true
+
+},
+
+false
+
+);
+
+
+scanner.render(
+
+onScanSuccess
+
+);
+
+
+/************************************************
+ * LOAD DASHBOARD
+ ************************************************/
+
+
+async function loadDashboard(){
+
+
+const loading =
+
+document.getElementById(
+
+"loading"
+
+);
+
+
+try{
+
+
+const response =
+
+await fetch(
+
+API_URL +
+
+"?action=getDashboard&t=" +
+
+Date.now(),
+
+{
+
+cache:
+
+"no-store"
+
+}
+
+);
+
+
+if(
+
+!response.ok
+
+){
+
+
+throw new Error(
+
+"API HTTP error: " +
+
+response.status
+
+);
+
+
+}
+
+
+dashboard =
+
+await response.json();
+
+
+if(
+
+dashboard.status ===
+
+"ERROR"
+
+){
+
+
+throw new Error(
+
+dashboard.message
+
+);
+
+
+}
+
+
+/*
+ * DEFECT
+ */
+
+
+fillDefectSelect(
+
+dashboard.defects
+
+);
+
+
+/*
+ * FOUND AT
+ */
+
+
+fillStandardSelect(
+
+"foundAt",
+
+dashboard.foundAt,
+
+"Select Found at"
+
+
+);
+
+
+/*
+ * LOCATION
+ */
+
+
+fillStandardSelect(
+
+"location",
+
+dashboard.locations,
+
+"Select Location"
+
+
+);
+
+
+/*
+ * LMS CONTACT
+ */
+
+
+fillStandardSelect(
+
+"contact",
+
+dashboard.contacts,
+
+"Select LMS Contact"
+
+
+);
+
+
+/*
+ * OEM
+ */
+
+
+fillStandardSelect(
+
+"oem",
+
+dashboard.oems,
+
+"Select OEM"
+
+
+);
+
+
+loading.style.display =
+
+"none";
+
+
+}
+catch(error){
+
+
+console.error(
+
+"Dashboard error:",
+
+error
+
+);
+
+
+loading.className =
+
+"error";
+
+
+loading.innerHTML =
+
+"Dashboard loading error: " +
+
+escapeHtml(
+
+error.message
+
+);
+
+
+}
+
+
+}
+
+
+/************************************************
+ * FILL DEFECT SELECT
+ ************************************************/
+
+
+function fillDefectSelect(
+
+items
+
+){
+
+
+const select =
+
+document.getElementById(
+
+"defect"
+
+);
+
+
+select.innerHTML =
+
+"";
+
+
+addPlaceholder(
+
+select,
+
+"Select defect"
+
+);
+
+
+if(
+
+!Array.isArray(
+
+items
+
+)
+
+){
+
+
+return;
+
+
+}
+
+
+items.forEach(
+
+function(item){
+
+
+const option =
+
+document.createElement(
+
+"option"
+
+);
+
+
+option.value =
+
+item.code +
+
+"|" +
+
+item.description;
+
+
+option.textContent =
+
+item.code +
+
+" - " +
+
+item.description;
+
+
+select.appendChild(
+
+option
+
+);
+
+
+}
+
+);
+
+
+}
+
+
+/************************************************
+ * FILL STANDARD SELECT
+ ************************************************/
+
+
+function fillStandardSelect(
+
+elementId,
+
+items,
+
+placeholder
+
+){
+
+
+const select =
+
+document.getElementById(
+
+elementId
+
+);
+
+
+select.innerHTML =
+
+"";
+
+
+addPlaceholder(
+
+select,
+
+placeholder
+
+);
+
+
+if(
+
+!Array.isArray(
+
+items
+
+)
+
+){
+
+
+return;
+
+
+}
+
+
+items.forEach(
+
+function(item){
+
+
+const cleanItem =
+
+String(
+
+item || ""
+
+)
+
+.trim();
+
+
+if(
+
+cleanItem === ""
+
+){
+
+
+return;
+
+
+}
+
+
+const option =
+
+document.createElement(
+
+"option"
+
+);
+
+
+option.value =
+
+cleanItem;
+
+
+option.textContent =
+
+cleanItem;
+
+
+select.appendChild(
+
+option
+
+);
+
+
+}
+
+);
+
+
+}
+
+
+/************************************************
+ * ADD PLACEHOLDER
+ ************************************************/
+
+
+function addPlaceholder(
+
+select,
+
+text
+
+){
+
+
+const option =
+
+document.createElement(
+
+"option"
+
+);
+
+
+option.value =
+
+"";
+
+
+option.textContent =
+
+text;
+
+
+option.disabled =
+
+true;
+
+
+option.selected =
+
+true;
+
+
+select.appendChild(
+
+option
+
+);
+
+
+}
+
+
+/************************************************
+ * FILE TO BASE64
+ ************************************************/
+
+
+function fileToBase64(
+
+file
+
+){
+
+
+return new Promise(
+
+function(
+
+resolve,
+
+reject
+
+){
+
+
+if(
+
+!file
+
+){
+
+
+resolve(
+
+""
+
+);
+
+
+return;
+
+
+}
+
+
+const reader =
+
+new FileReader();
+
+
+reader.onload =
+
+function(event){
+
+
+resolve(
+
+event.target.result
+
+);
+
+
+};
+
+
+reader.onerror =
+
+function(){
+
+
+reject(
+
+new Error(
+
+"Photo reading error."
+
+)
+
+);
+
+
+};
+
+
+reader.readAsDataURL(
+
+file
+
+);
+
+
+}
+
+);
+
+
+}
+
+
+/************************************************
+ * SAVE DATA
+ ************************************************/
+
+
+async function saveData(
+
+event
+
+){
+
+
+event.preventDefault();
+
+
+if(
+
+saveInProgress
+
+){
+
+
+return;
+
+
+}
+
+
+const serial =
+
+document
+
+.getElementById(
+
+"serial"
+
+)
+
+.value
+
+.trim();
+
+
+if(
+
+serial === ""
+
+){
+
+
+alert(
+
+"Scan QR code or enter Serial Number."
+
+);
+
+
+return;
+
+
+}
+
+
+saveInProgress =
+
+true;
+
+
+const saveButton =
+
+document.getElementById(
+
+"saveButton"
+
+);
+
+
+saveButton.disabled =
+
+true;
+
+
+saveButton.textContent =
+
+"SAVING...";
+
+
+clearStatus();
+
+
+try{
+
+
+const defectValue =
+
+document
+
+.getElementById(
+
+"defect"
+
+)
+
+.value;
+
+
+const defectParts =
+
+defectValue.split(
+
+"|"
+
+);
+
+
+const labelFile =
+
+document
+
+.getElementById(
+
+"labelPhoto"
+
+)
+
+.files[0];
+
+
+const failureFile =
+
+document
+
+.getElementById(
+
+"photo"
+
+)
+
+.files[0];
+
+
+const labelImage =
+
+await fileToBase64(
+
+labelFile
+
+);
+
+
+const image =
+
+await fileToBase64(
+
+failureFile
+
+);
+
+
+/*
+ * DATA SENT TO APPS SCRIPT
+ */
+
+
+const payload = {
+
+
+serial:
+
+serial,
+
+
+defectCode:
+
+defectParts[0] || "",
+
+
+defectName:
+
+defectParts
+.slice(1)
+.join("|"),
+
+
+foundAt:
+
+document
+
+.getElementById(
+
+"foundAt"
+
+)
+
+.value,
+
+
+location:
+
+document
+
+.getElementById(
+
+"location"
+
+)
+
+.value,
+
+
+contact:
+
+document
+
+.getElementById(
+
+"contact"
+
+)
+
+.value,
+
+
+oem:
+
+document
+
+.getElementById(
+
+"oem"
+
+)
+
+.value,
+
+
+comment:
+
+document
+
+.getElementById(
+
+"comment"
+
+)
+
+.value
+
+.trim(),
+
+
+qty:
+
+Number(
+
+document
+
+.getElementById(
+
+"qty"
+
+)
+
+.value
+
+),
+
+
+user:
+
+document
+
+.getElementById(
+
+"user"
+
+)
+
+.value
+
+.trim(),
+
+
+labelImage:
+
+labelImage,
+
+
+image:
+
+image
+
+
+};
+
+
+const response =
+
+await fetch(
+
+API_URL,
+
+{
+
+method:
+
+"POST",
+
+body:
+
+JSON.stringify(
+
+payload
+
+)
+
+}
+
+);
+
+
+const responseText =
+
+await response.text();
+
+
+console.log(
+
+responseText
+
+);
+
+
+let result;
+
+
+try{
+
+
+result =
+
+JSON.parse(
+
+responseText
+
+);
+
+
+}
+catch(error){
+
+
+throw new Error(
+
+"Incorrect API response."
+
+);
+
+
+}
+
+
+/*
+ * DUPLICATE
+ */
+
+
+if(
+
+result.status ===
+
+"DUPLICATE"
+
+){
+
+
+showError(
+
+"Serial Number already exists: " +
+
+serial
+
+);
+
+
+alert(
+
+"Serial Number already exists:\n\n" +
+
+serial
+
+);
+
+
+return;
+
+
+}
+
+
+/*
+ * API ERROR
+ */
+
+
+if(
+
+result.status !==
+
+"OK"
+
+){
+
+
+throw new Error(
+
+result.message ||
+
+"Record was not saved."
+
+);
+
+
+}
+
+
+/*
+ * SUCCESS
+ */
+
+
+beepSuccess();
+
+
+if(
+
+navigator.vibrate
+
+){
+
+
+navigator.vibrate(
+
+[
+
+100,
+
+50,
+
+100
+
+]
+
+);
+
+
+}
+
+
+showSuccess(
+
+"Saved: " +
+
+result.id +
+
+" | OEM: " +
+
+result.oem
+
+);
+
+
+resetForm();
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:
+
+"smooth"
+
+});
+
+
+}
+catch(error){
+
+
+console.error(
+
+"Save error:",
+
+error
+
+);
+
+
+showError(
+
+"Save error: " +
+
+error.message
+
+);
+
+
+alert(
+
+"Save error:\n\n" +
+
+error.message
+
+);
+
+
+}
+finally{
+
+
+saveInProgress =
+
+false;
+
+
+saveButton.disabled =
+
+false;
+
+
+saveButton.textContent =
+
+"SAVE RECORD";
+
+
+}
+
+
+}
+
+
+/************************************************
+ * RESET FORM
+ ************************************************/
+
+
+function resetForm(){
+
+
+document
+
+.getElementById(
+
+"serial"
+
+)
+
+.value =
+
+"";
+
+
+document
+
+.getElementById(
+
+"comment"
+
+)
+
+.value =
+
+"";
+
+
+document
+
+.getElementById(
+
+"photo"
+
+)
+
+.value =
+
+"";
+
+
+document
+
+.getElementById(
+
+"labelPhoto"
+
+)
+
+.value =
+
+"";
+
+
+document
+
+.getElementById(
+
+"qty"
+
+)
+
+.value =
+
+"1";
+
+
+}
+
+
+/************************************************
+ * STATUS
+ ************************************************/
+
+
+function clearStatus(){
+
+
+document
+
+.getElementById(
+
+"status"
+
+)
+
+.innerHTML =
+
+"";
+
+
+}
+
+
+function showSuccess(
+
+message
+
+){
+
+
+document
+
+.getElementById(
+
+"status"
+
+)
+
+.innerHTML =
+
+'<div class="success">' +
+
+escapeHtml(
+
+message
+
+) +
+
+"</div>";
+
+
+}
+
+
+function showError(
+
+message
+
+){
+
+
+document
+
+.getElementById(
+
+"status"
+
+)
+
+.innerHTML =
+
+'<div class="error">' +
+
+escapeHtml(
+
+message
+
+) +
+
+"</div>";
+
+
+}
+
+
+/************************************************
+ * HTML SECURITY
+ ************************************************/
+
+
+function escapeHtml(
+
+value
+
+){
+
+
+return String(
+
+value
+
+)
+
+.replace(
+
+/&/g,
+
+"&amp;"
+
+)
+
+.replace(
+
+/</g,
+
+"&lt;"
+
+)
+
+.replace(
+
+/>/g,
+
+"&gt;"
+
+)
+
+.replace(
+
+/"/g,
+
+"&quot;"
+
+)
+
+.replace(
+
+/'/g,
+
+"&#039;"
+
+);
+
+
+}
+
+
+/************************************************
+ * START APPLICATION
+ ************************************************/
+
+
+loadDashboard();
+
 
 </script>
+
 
 </body>
 
