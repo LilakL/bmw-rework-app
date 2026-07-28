@@ -17,7 +17,7 @@ content="width=device-width, initial-scale=1">
 <script
 src="https://unpkg.com/html5-qrcode">
 </script>
-
+<script src="https://unpkg.com/@zxing/browser@latest"></script>
 
 <style>
 
@@ -332,10 +332,24 @@ Loading dashboard...
 </div>
 
 
-<div id="reader">
+<div id="scannerContainer">
+
+    <div id="reader"></div>
+
+    <div id="smartScannerStatus" class="info" style="margin-top:10px;">
+
+        Smart Scanner: Initializing...
+
+    </div>
 
 </div>
+<button
+    type="button"
+    id="btnSmartScanner">
 
+    SMART SCANNER (TEST)
+
+</button>
 
 <form id="form">
 
@@ -1694,7 +1708,38 @@ document
 
 
 }
+/************************************************
+ * SMART SCANNER STATUS
+ ************************************************/
 
+function setScannerStatus(text){
+
+    document
+        .getElementById("smartScannerStatus")
+        .textContent = text;
+
+}
+    /************************************************
+ * TEST ZXING
+ ************************************************/
+
+function testZXing(){
+
+    if(window.ZXing){
+
+        console.log("ZXing loaded.");
+
+        setScannerStatus("ZXing loaded.");
+
+    }else{
+
+        console.error("ZXing NOT loaded.");
+
+        setScannerStatus("ZXing NOT loaded.");
+
+    }
+
+}
 /************************************************
  * KPI DASHBOARD
  ************************************************/
@@ -1738,6 +1783,8 @@ async function loadDashboardKPI(){
  ************************************************/
 
 loadDashboard();
+
+testZXing();
 
 
 </script>
